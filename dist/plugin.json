@@ -1,0 +1,58 @@
+{
+  "type": "datasource",
+  "name": "n9e-datasource",
+  "id": "n9e-datasource",
+  "metrics": true,
+  "annotations": false,
+  "info": {
+    "description": "",
+    "author": {
+      "name": "n9e",
+      "url": "https://n9e.didiyun.com/"
+    },
+    "keywords": [],
+    "logos": {
+      "small": "img/logo.svg",
+      "large": "img/logo.svg"
+    },
+    "links": [
+      {
+        "name": "Website",
+        "url": "https://github.com/grafana/simple-datasource"
+      },
+      {
+        "name": "License",
+        "url": "https://github.com/grafana/simple-datasource/blob/master/LICENSE"
+      }
+    ],
+    "screenshots": [],
+    "version": "1.0.0",
+    "updated": "2020-05-28"
+  },
+  "routes": [{
+    "path": "v1",
+    "method": "GET",
+    "url": "{{.JsonData.path}}/v1",
+    "headers": [
+      {"name": "x-srv-token", "content": "{{.SecureJsonData.apiKey}}"}
+    ]
+  }, {
+    "path": "api",
+    "method": "GET",
+    "url": "{{.JsonData.path}}/api",
+    "headers": [
+      {"name": "x-srv-token", "content": "{{.SecureJsonData.apiKey}}"}
+    ]
+  }, {
+    "path": "api",
+    "method": "POST",
+    "url": "{{.JsonData.path}}/api",
+    "headers": [
+      {"name": "x-srv-token", "content": "{{.SecureJsonData.apiKey}}"}
+    ]
+  }],
+  "dependencies": {
+    "grafanaVersion": "6.5.x",
+    "plugins": []
+  }
+}
