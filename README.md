@@ -11,6 +11,15 @@ Grafana >= 7.x.x
 grafana-cli --pluginUrl https://github.com/n9e/grafana-n9e-datasource/archive/v1.0.0.zip plugins install grafana-n9e-datasource
 ```
 
+## Configuration
+
+Add tokens in monapi.yml and use this token as authorization in header. `x-srv-token: xxxxx`
+
+```
+tokens:
+  - xxxxx
+```
+
 ![image](https://user-images.githubusercontent.com/7424634/83121099-78fcdc80-a104-11ea-8b95-4935bde6b7dd.png)
 
 ## Getting started
