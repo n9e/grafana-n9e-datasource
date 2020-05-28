@@ -2,6 +2,10 @@
 
 Emm, nothing to say, it is better to install and use it.
 
+## Dependencies
+
+Grafana >= 7.x.x
+
 ## Installation
 ```BASH
 grafana-cli --pluginUrl https://github.com/n9e/grafana-n9e-datasource/archive/v1.0.0.zip plugins install grafana-n9e-datasource
