@@ -1,11 +1,17 @@
-# Grafana Data Source Plugin Template
+# Grafana-n9e-datasource
 
-[![CircleCI](https://circleci.com/gh/grafana/simple-datasource/tree/master.svg?style=svg)](https://circleci.com/gh/grafana/simple-datasource/tree/master)
+Emm, nothing to say, it is better to install and use it.
 
-This template is a starting point for building Grafana Data Source Plugins
+## Dependencies
 
-## What is Grafana Data Source Plugin?
-Grafana supports a wide range of data sources, including Prometheus, MySQL, and even Datadog. There’s a good chance you can already visualize metrics from the systems you have set up. In some cases, though, you already have an in-house metrics solution that you’d like to add to your Grafana dashboards. Grafana Data Source Plugins enables integrating such solutions with Grafana.
+Grafana >= 7.x.x
+
+## Installation
+```BASH
+grafana-cli --pluginUrl https://github.com/n9e/grafana-n9e-datasource/archive/v1.0.0.zip plugins install grafana-n9e-datasource
+```
+
+![image](https://user-images.githubusercontent.com/7424634/83121099-78fcdc80-a104-11ea-8b95-4935bde6b7dd.png)
 
 ## Getting started
 1. Install dependencies

@@ -54,12 +54,12 @@ export class ConfigEditor extends PureComponent<Props, State> {
       <div className="gf-form-group">
         <div className="gf-form">
           <FormField
-            label="Path"
+            label="Api url"
             labelWidth={6}
             inputWidth={20}
             onChange={this.onPathChange}
             value={jsonData.path || ''}
-            placeholder="json field returned to frontend"
+            placeholder="n9e backend api url"
           />
         </div>
 
@@ -68,8 +68,8 @@ export class ConfigEditor extends PureComponent<Props, State> {
             <SecretFormField
               isConfigured={(secureJsonFields && secureJsonFields.apiKey) as boolean}
               value={secureJsonData.apiKey || ''}
-              label="API Key"
-              placeholder="secure json field (backend only)"
+              label="Token"
+              placeholder="field tokens in monapi.yml"
               labelWidth={6}
               inputWidth={20}
               onReset={this.onResetAPIKey}
