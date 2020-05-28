@@ -20,6 +20,14 @@ tokens:
   - xxxxx
 ```
 
+Add location in nginx.conf
+
+```
+location /v1/portal {
+    proxy_pass http://n9e.monapi;
+}
+```
+
 ![image](https://user-images.githubusercontent.com/7424634/83121099-78fcdc80-a104-11ea-8b95-4935bde6b7dd.png)
 
 ## Getting started
