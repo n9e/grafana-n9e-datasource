@@ -13,7 +13,7 @@ grafana-cli --pluginUrl https://github.com/n9e/grafana-n9e-datasource/archive/v1
 
 ## Configuration
 
-Add tokens in monapi.yml and use this token as authorization in header. `x-srv-token: xxxxx`
+Add field `tokens` in monapi.yml and use this token as API Key when config n9e datasource.
 
 ```
 tokens:
