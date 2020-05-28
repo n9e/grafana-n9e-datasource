@@ -7,7 +7,7 @@ Emm, nothing to say, it is better to install and use it.
 grafana-cli --pluginUrl https://github.com/n9e/grafana-n9e-datasource/archive/v1.0.0.zip plugins install grafana-n9e-datasource
 ```
 
-![image](https://user-images.githubusercontent.com/7424634/83120633-dd6b6c00-a103-11ea-9bb2-d8d95bda33ec.png)
+![image](https://user-images.githubusercontent.com/7424634/83120926-418e3000-a104-11ea-93c5-9f662dc88a82.png)
 
 ## Getting started
 1. Install dependencies
