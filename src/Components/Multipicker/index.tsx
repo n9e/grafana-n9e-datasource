@@ -138,7 +138,7 @@ class Multipicker extends Component<TypeProps, TypeState> {
   };
 
   handleManualEntry = () => {
-    const { selected, manualVal } = this.state;
+    const { manualVal } = this.state;
     const arrVal = manualVal ? _.split(manualVal, '\n') : [];
     // const newSelected = _.uniq(_.concat([], arrVal, selected));
     const newSelected = arrVal; // 手动输入的会覆盖已有的值
