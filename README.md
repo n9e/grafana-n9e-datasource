@@ -13,7 +13,7 @@ grafana-cli --pluginUrl https://github.com/n9e/grafana-n9e-datasource/archive/v1
 
 ## Configuration
 
-Add field `tokens` in monapi.yml and use this token as API Key when config n9e datasource.
+Add field `tokens` in monapi.yml and use this token when config n9e datasource.
 
 ```
 tokens:
