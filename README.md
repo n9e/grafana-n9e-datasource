@@ -8,7 +8,7 @@ Grafana >= 7.x.x
 
 ## Installation
 ```BASH
-grafana-cli --pluginUrl https://github.com/n9e/grafana-n9e-datasource/archive/v1.0.1.zip plugins install grafana-n9e-datasource
+grafana-cli --pluginUrl https://github.com/n9e/grafana-n9e-datasource/archive/v1.0.2.zip plugins install grafana-n9e-datasource
 ```
 
 ## Configuration
@@ -36,7 +36,7 @@ location /v1/portal {
 Create datasource.
 
 ```
-Api Url: nginx address
+URL: nginx address
 Token: the token u just created in monapi.yml
 ```
 
