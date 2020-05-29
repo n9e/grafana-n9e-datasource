@@ -8,7 +8,24 @@ Grafana >= 7.x.x
 
 ## Installation
 ```BASH
-grafana-cli --pluginUrl https://github.com/n9e/grafana-n9e-datasource/archive/v1.0.0.zip plugins install grafana-n9e-datasource
+grafana-cli --pluginUrl https://github.com/n9e/grafana-n9e-datasource/archive/v1.0.1.zip plugins install grafana-n9e-datasource
+```
+
+## Configuration
+
+Add field `tokens` in monapi.yml and use this token as API Key when config n9e datasource.
+
+```
+tokens:
+  - xxxxx
+```
+
+Add location in nginx.conf
+
+```
+location /v1/portal {
+    proxy_pass http://n9e.monapi;
+}
 ```
 
 ![image](https://user-images.githubusercontent.com/7424634/83121099-78fcdc80-a104-11ea-8b95-4935bde6b7dd.png)

@@ -145,7 +145,7 @@ export class QueryEditor extends PureComponent<Props> {
 
   fetchTagkvData(metrics: Array<string | undefined>) {
     const query = _.defaults(this.props.query, defaultQuery);
-    let { selectedEndpointsIdent } = query;
+    let { selectedEndpointsIdent, selectedTagkv } = query;
     const { endpointsData } = this.state;
     this.setState({ tagkvDataLoading: true });
     if (hasDtag(selectedEndpointsIdent)) {
@@ -164,7 +164,7 @@ export class QueryEditor extends PureComponent<Props> {
         const tagkvData = _.get(res, '[0].tagkv'); // TODO: single metric
         this.setState({ tagkvData });
         const { onChange, query, onRunQuery } = this.props;
-        onChange({ ...query, selectedTagkv: tagkvData });
+        onChange({ ...query, selectedTagkv: selectedTagkv || tagkvData });
         onRunQuery();
       })
       .catch(err => {})

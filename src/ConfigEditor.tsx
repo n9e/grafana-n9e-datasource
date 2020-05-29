@@ -54,12 +54,12 @@ export class ConfigEditor extends PureComponent<Props, State> {
       <div className="gf-form-group">
         <div className="gf-form">
           <FormField
-            label="Api url"
+            label="URL"
             labelWidth={6}
             inputWidth={20}
             onChange={this.onPathChange}
             value={jsonData.path || ''}
-            placeholder="n9e backend api url"
+            placeholder="nginx address"
           />
         </div>
 
