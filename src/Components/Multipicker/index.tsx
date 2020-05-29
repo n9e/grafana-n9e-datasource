@@ -140,7 +140,8 @@ class Multipicker extends Component<TypeProps, TypeState> {
   handleManualEntry = () => {
     const { selected, manualVal } = this.state;
     const arrVal = manualVal ? _.split(manualVal, '\n') : [];
-    const newSelected = _.uniq(_.concat([], arrVal, selected));
+    // const newSelected = _.uniq(_.concat([], arrVal, selected));
+    const newSelected = arrVal; // 手动输入的会覆盖已有的值
 
     _.remove(newSelected, o => o === '');
 
@@ -316,11 +317,12 @@ class Multipicker extends Component<TypeProps, TypeState> {
                   }}
                   content={
                     <div>
+                      <div>Split multiple values ​​by newline</div>
                       <TextArea
                         type="textarea"
+                        placeholder="xx.xx.xx.xx&#10;xx.xx.xx.xx"
                         autoSize={{ minRows: 2, maxRows: 6 }}
                         style={{ width: 230 }}
-                        placeholder="多个值用换行分割"
                         value={this.state.manualVal}
                         onChange={(e: any) => {
                           this.setState({ manualVal: e.target.value });
@@ -340,7 +342,7 @@ class Multipicker extends Component<TypeProps, TypeState> {
                       this.setState({ manualVisible: !this.state.manualVisible });
                     }}
                   >
-                    manual
+                    setValue
                   </a>
                 </Popover>
               )}

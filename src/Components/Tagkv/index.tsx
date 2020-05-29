@@ -189,6 +189,7 @@ export default class Tagkv extends Component<Props, State> {
           const content = (
             <span>
               <Multipicker
+                manualEntry={tagk === 'endpoint'}
                 ref={ref => {
                   this[`${tagk}multipicker`] = ref;
                 }}
