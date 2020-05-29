@@ -37,7 +37,7 @@ Create datasource.
 
 ```
 Api Url: nginx address
-Token: the token u just create in monapi.yml
+Token: the token u just created in monapi.yml
 ```
 
 ![image](https://user-images.githubusercontent.com/7424634/83121099-78fcdc80-a104-11ea-8b95-4935bde6b7dd.png)
