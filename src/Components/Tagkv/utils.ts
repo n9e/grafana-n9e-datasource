@@ -39,6 +39,10 @@ export function hasDtag(data: Array<TypeTagkv | string> = []) {
   });
 }
 
+export function hasVariable(data: string[]): boolean {
+  return data[0].indexOf('$') === 0;
+}
+
 export function sortTagkvs(tagkvs: TypeTagkv[]) {
   if (!tagkvs) {
     return tagkvs;

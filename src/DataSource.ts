@@ -7,11 +7,11 @@ import {
   MutableDataFrame,
   FieldType,
 } from '@grafana/data';
-import { BackendSrv, BackendSrvRequest } from '@grafana/runtime';
+import { BackendSrv, BackendSrvRequest, getTemplateSrv } from '@grafana/runtime';
 import { message } from 'antd';
 
 import { MyQuery, MyDataSourceOptions, defaultQuery } from './types';
-import { hasDtag, getDTagvKeyword, dFilter } from './Components/Tagkv/utils';
+import { hasDtag, hasVariable, getDTagvKeyword, dFilter } from './Components/Tagkv/utils';
 import { normalizeEndpointCounters } from './utils';
 import { comparisonOptions } from './config';
 
@@ -82,6 +82,8 @@ export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
   }
 
   async query(options: DataQueryRequest<MyQuery>): Promise<DataQueryResponse> {
+    const templateSrv = getTemplateSrv();
+    // const templateSrvVariables = templateSrv.getVariables();
     const { range } = options;
     const from = range!.from.valueOf();
     const to = range!.to.valueOf();
@@ -95,6 +97,11 @@ export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
         const endpointsData = (await this.fetchEndpointsData(selectedNid)) as string[];
         const dTagvKeyword = getDTagvKeyword(selectedEndpointsIdent[0]) as string;
         selectedEndpointsIdent = dFilter(dTagvKeyword, selectedEndpointsIdent[0], endpointsData);
+      } else if (hasVariable(selectedEndpointsIdent)) {
+        const replaced = templateSrv.replace(selectedEndpointsIdent[0], undefined, (result: any) => {
+          return result;
+        });
+        selectedEndpointsIdent = _.split(replaced, ',');
       }
       const counters = await this.fetchCountersData([
         {

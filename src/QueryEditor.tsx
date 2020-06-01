@@ -3,14 +3,14 @@ import React, { PureComponent } from 'react';
 import { Input, Select, message } from 'antd';
 import { LegacyForms } from '@grafana/ui';
 import { QueryEditorProps } from '@grafana/data';
-import { BackendSrvRequest } from '@grafana/runtime';
+import { BackendSrvRequest, getTemplateSrv } from '@grafana/runtime';
 import { DataSource } from './DataSource';
 import { defaultQuery, MyDataSourceOptions, MyQuery } from './types';
 import TreeSelect, { normalizeTreeData } from './Components/TreeSelect';
 import { TypeTreeNode } from './Components/TreeSelect/types';
 import Tagkv from './Components/Tagkv';
 import { TypeTagkv } from './Components/Tagkv/types';
-import { hasDtag, getDTagvKeyword, dFilter } from './Components/Tagkv/utils';
+import { hasDtag, hasVariable, getDTagvKeyword, dFilter } from './Components/Tagkv/utils';
 import { aggrOptions, comparisonOptions } from './config';
 import './less/style.less';
 import './less/antd.dark.less';
@@ -120,12 +120,18 @@ export class QueryEditor extends PureComponent<Props> {
   }
 
   fetchMetricsData(endpointsIdent: string[]) {
+    const templateSrv = getTemplateSrv();
     const { endpointsData } = this.state;
     let selectedEndpointsIdent = endpointsIdent;
     this.setState({ metricsDataLoading: true });
     if (hasDtag(selectedEndpointsIdent)) {
       const dTagvKeyword = getDTagvKeyword(selectedEndpointsIdent[0]) as string;
       selectedEndpointsIdent = dFilter(dTagvKeyword, selectedEndpointsIdent[0], endpointsData);
+    } else if (hasVariable(selectedEndpointsIdent)) {
+      const replaced = templateSrv.replace(selectedEndpointsIdent[0], undefined, (result: any) => {
+        return result;
+      });
+      selectedEndpointsIdent = _.split(replaced, ',');
     }
     return this._request({
       url: '/api/index/metrics',

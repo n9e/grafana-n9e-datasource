@@ -20,7 +20,7 @@
     "node": ">=12 <13"
   },
   "dependencies": {
-    "@grafana/runtime": "^6.7.3",
+    "@grafana/runtime": "^7.0.1",
     "antd": "3.x",
     "lodash": "^4.17.15",
     "react-addons-update": "^15.6.2",
