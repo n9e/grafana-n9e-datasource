@@ -8,7 +8,7 @@ Grafana >= 7.x.x
 
 ## Installation
 ```BASH
-grafana-cli --pluginUrl https://github.com/n9e/grafana-n9e-datasource/archive/v1.0.2.zip plugins install grafana-n9e-datasource
+grafana-cli --pluginUrl https://github.com/n9e/grafana-n9e-datasource/archive/v1.0.3.zip plugins install grafana-n9e-datasource
 ```
 
 ## Configuration
