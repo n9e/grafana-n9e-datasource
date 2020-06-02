@@ -53,7 +53,7 @@ export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
       method: 'GET',
     })
       .then(res => {
-        const treeData = _.map(res, (item) => {
+        const treeData = _.map(res, item => {
           return {
             text: item.path,
           };
@@ -193,11 +193,11 @@ export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
       const node = _.find(this.treeData, { path: nodePath });
       if (node && node.id) {
         return this.fetchEndpointsData(node.id).then((res: any) => {
-          return _.map(res, (item) => {
+          return _.map(res, item => {
             return {
               text: item,
             };
-          })
+          });
         });
       }
       return [] as any;
