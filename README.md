@@ -2,11 +2,11 @@
 
 Emm, nothing to say, it is better to install and use it.
 
-![image](https://user-images.githubusercontent.com/7424634/83121099-78fcdc80-a104-11ea-8b95-4935bde6b7dd.png)
+<img height="300" src="https://user-images.githubusercontent.com/7424634/83121099-78fcdc80-a104-11ea-8b95-4935bde6b7dd.png" />
 
 ## Dependencies
 
-Grafana >= 7.x.x
+Grafana >= 7.x.x  
 Nightingale >= V2.4.1
 
 ## Installation
