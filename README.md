@@ -2,13 +2,16 @@
 
 Emm, nothing to say, it is better to install and use it.
 
+![image](https://user-images.githubusercontent.com/7424634/83121099-78fcdc80-a104-11ea-8b95-4935bde6b7dd.png)
+
 ## Dependencies
 
 Grafana >= 7.x.x
+Nightingale >= V2.4.1
 
 ## Installation
 ```BASH
-grafana-cli --pluginUrl https://github.com/n9e/grafana-n9e-datasource/archive/v1.1.0.zip plugins install grafana-n9e-datasource
+grafana-cli --pluginUrl https://github.com/n9e/grafana-n9e-datasource/archive/v1.2.0.zip plugins install grafana-n9e-datasource
 ```
 
 ## Configuration
@@ -40,9 +43,16 @@ URL: nginx address
 Token: the token u just created in monapi.yml
 ```
 
-![image](https://user-images.githubusercontent.com/7424634/83121099-78fcdc80-a104-11ea-8b95-4935bde6b7dd.png)
+### grafana variables
 
-## Getting started
+| Name | Type | Query(Query Options) | Multi-value(Selection Options) | Include All option(Selection Options) |  
+| ---- | ---- | ---- | ------ | -- |  
+| Node | Query | Node | off | off |  
+| Endpoints | Query | Endpoints BY $Node | on | on |  
+
+> Variable names are fixed.
+
+## Development
 1. Install dependencies
 ```BASH
 yarn install
