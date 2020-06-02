@@ -12,6 +12,7 @@ import { message } from 'antd';
 
 import { MyQuery, MyDataSourceOptions, defaultQuery } from './types';
 import { hasDtag, hasVariable, getDTagvKeyword, dFilter } from './Components/Tagkv/utils';
+import { TypeTreeNode } from './Components/TreeSelect/types';
 import { normalizeEndpointCounters } from './utils';
 import { comparisonOptions } from './config';
 
@@ -19,6 +20,8 @@ export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
   constructor(public instanceSettings: DataSourceInstanceSettings<MyDataSourceOptions>, public backendSrv: BackendSrv) {
     super(instanceSettings);
   }
+
+  treeData: TypeTreeNode[] = [];
 
   _request(options: BackendSrvRequest) {
     const { id } = this.instanceSettings;
@@ -42,6 +45,24 @@ export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
           message.error(err.statusText);
         }
       });
+  }
+
+  fetchTreeData() {
+    return this._request({
+      url: '/v1/portal/tree',
+      method: 'GET',
+    })
+      .then(res => {
+        const treeData = _.map(res, (item) => {
+          return {
+            text: item.path,
+          };
+        });
+        this.treeData = res;
+        return treeData;
+      })
+      .catch(err => {})
+      .finally(() => {});
   }
 
   fetchEndpointsData(nid: number) {
@@ -83,7 +104,6 @@ export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
 
   async query(options: DataQueryRequest<MyQuery>): Promise<DataQueryResponse> {
     const templateSrv = getTemplateSrv();
-    // const templateSrvVariables = templateSrv.getVariables();
     const { range } = options;
     const from = range!.from.valueOf();
     const to = range!.to.valueOf();
@@ -160,6 +180,29 @@ export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
     }
 
     return { data };
+  }
+
+  metricFindQuery(query: 'Node' | 'Endpoints BY $Node', options?: any) {
+    if (query === 'Node') {
+      return this.fetchTreeData();
+    }
+    if (query === 'Endpoints BY $Node') {
+      const templateSrv = getTemplateSrv();
+      const variable = _.find(templateSrv.getVariables(), { name: 'Node' });
+      const nodePath = _.get(variable, 'current.value');
+      const node = _.find(this.treeData, { path: nodePath });
+      if (node && node.id) {
+        return this.fetchEndpointsData(node.id).then((res: any) => {
+          return _.map(res, (item) => {
+            return {
+              text: item,
+            };
+          })
+        });
+      }
+      return [] as any;
+    }
+    return [] as any;
   }
 
   async testDatasource() {
