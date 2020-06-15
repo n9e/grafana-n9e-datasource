@@ -90,7 +90,7 @@ export function dFilter(dType: string, firstTagv: string, currentTagv: string[])
 
 export function getDTagV(tagkvs: TypeTagkv[], tag: TypeTagkv) {
   const { tagk, tagv = [''] } = tag;
-  const currentTagkv = _.find(tagkvs, { tagk }) || {} as TypeTagkv;
+  const currentTagkv = _.find(tagkvs, { tagk }) || ({} as TypeTagkv);
   const currentTagv = currentTagkv.tagv || [];
   let newTagv = tagv;
   const firstTagv = tagv[0] || '';

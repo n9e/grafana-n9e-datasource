@@ -124,7 +124,7 @@ export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
         selectedEndpointsIdent = _.split(replaced, ',');
       }
       if (hasDtag(selectedTagkv)) {
-        selectedTagkv = _.map(selectedTagkv, (item) => {
+        selectedTagkv = _.map(selectedTagkv, item => {
           return {
             tagk: item.tagk,
             tagv: getDTagV(tagkv, item),

@@ -170,7 +170,7 @@ export class QueryEditor extends PureComponent<Props> {
         const tagkvData = _.get(res, '[0].tagkv'); // TODO: single metric
         this.setState({ tagkvData });
         const { onChange, query, onRunQuery } = this.props;
-        let newSelectedTagkv = _.map(tagkvData, (item) => {
+        let newSelectedTagkv = _.map(tagkvData, item => {
           return {
             tagk: item.tagk,
             tagv: ['=all'],
