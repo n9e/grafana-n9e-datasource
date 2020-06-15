@@ -87,3 +87,19 @@ export function dFilter(dType: string, firstTagv: string, currentTagv: string[])
     return false;
   });
 }
+
+export function getDTagV(tagkvs: TypeTagkv[], tag: TypeTagkv) {
+  const { tagk, tagv = [''] } = tag;
+  const currentTagkv = _.find(tagkvs, { tagk }) || {} as TypeTagkv;
+  const currentTagv = currentTagkv.tagv || [];
+  let newTagv = tagv;
+  const firstTagv = tagv[0] || '';
+  if (firstTagv.indexOf('=all') === 0) {
+    newTagv = currentTagv;
+  } else if (firstTagv.indexOf('=+') === 0) {
+    newTagv = dFilter('=+', firstTagv, currentTagv);
+  } else if (firstTagv.indexOf('=-') === 0) {
+    newTagv = dFilter('=-', firstTagv, currentTagv);
+  }
+  return newTagv;
+}

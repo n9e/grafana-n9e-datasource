@@ -6,6 +6,7 @@ export interface MyQuery extends DataQuery {
   selectedEndpointsIdent: string[];
   selectedMetric: string;
   selectedTagkv: TypeTagkv[];
+  tagkv: TypeTagkv[];
   aggrFunc: 'sum' | 'avg' | 'max' | 'min';
   groupKey: string[];
   comparison: number[];

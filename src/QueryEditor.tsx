@@ -80,7 +80,7 @@ export class QueryEditor extends PureComponent<Props> {
         await this.fetchMetricsData(selectedEndpointsIdent);
       }
       if (selectedMetric) {
-        await this.fetchTagkvData([selectedMetric]);
+        await this.fetchTagkvData([selectedMetric], true);
       }
     } catch (e) {
       console.log(e);
@@ -149,7 +149,7 @@ export class QueryEditor extends PureComponent<Props> {
       });
   }
 
-  fetchTagkvData(metrics: Array<string | undefined>) {
+  fetchTagkvData(metrics: Array<string | undefined>, isFirstLoad = false) {
     const query = _.defaults(this.props.query, defaultQuery);
     let { selectedEndpointsIdent, selectedTagkv } = query;
     const { endpointsData } = this.state;
@@ -170,7 +170,20 @@ export class QueryEditor extends PureComponent<Props> {
         const tagkvData = _.get(res, '[0].tagkv'); // TODO: single metric
         this.setState({ tagkvData });
         const { onChange, query, onRunQuery } = this.props;
-        onChange({ ...query, selectedTagkv: selectedTagkv || tagkvData });
+        let newSelectedTagkv = _.map(tagkvData, (item) => {
+          return {
+            tagk: item.tagk,
+            tagv: ['=all'],
+          };
+        });
+        if (isFirstLoad) {
+          newSelectedTagkv = _.isEmpty(selectedTagkv) ? tagkvData : selectedTagkv;
+        }
+        onChange({
+          ...query,
+          selectedTagkv: newSelectedTagkv,
+          tagkv: tagkvData,
+        });
         onRunQuery();
       })
       .catch(err => {})
@@ -293,7 +306,6 @@ export class QueryEditor extends PureComponent<Props> {
                   onChange({
                     ...query,
                     selectedMetric: val,
-                    selectedTagkv: [],
                   });
                   this.fetchTagkvData([val]);
                 }}
@@ -324,7 +336,7 @@ export class QueryEditor extends PureComponent<Props> {
                 selectedTagkv={[
                   {
                     tagk: item.tagk,
-                    tagv: currentTagkv ? currentTagkv.tagv : ['=all'],
+                    tagv: currentTagkv ? currentTagkv.tagv : [],
                   },
                 ]}
                 onChange={(tagk, tagv) => {

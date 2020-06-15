@@ -11,7 +11,7 @@ import { BackendSrv, BackendSrvRequest, getTemplateSrv } from '@grafana/runtime'
 import { message } from 'antd';
 
 import { MyQuery, MyDataSourceOptions, defaultQuery } from './types';
-import { hasDtag, hasVariable, getDTagvKeyword, dFilter } from './Components/Tagkv/utils';
+import { hasDtag, hasVariable, getDTagvKeyword, dFilter, getDTagV } from './Components/Tagkv/utils';
 import { TypeTreeNode } from './Components/TreeSelect/types';
 import { normalizeEndpointCounters } from './utils';
 import { comparisonOptions } from './config';
@@ -111,8 +111,8 @@ export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
 
     for (let targetIdx = 0; targetIdx < options.targets.length; targetIdx++) {
       const query = _.defaults(options.targets[targetIdx], defaultQuery);
-      const { selectedNid, selectedMetric, selectedTagkv, aggrFunc, groupKey, comparison } = query;
-      let { selectedEndpointsIdent } = query;
+      const { selectedNid, selectedMetric, tagkv, aggrFunc, groupKey, comparison } = query;
+      let { selectedEndpointsIdent, selectedTagkv } = query;
       if (hasDtag(selectedEndpointsIdent)) {
         const endpointsData = (await this.fetchEndpointsData(selectedNid)) as string[];
         const dTagvKeyword = getDTagvKeyword(selectedEndpointsIdent[0]) as string;
@@ -122,6 +122,14 @@ export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
           return result;
         });
         selectedEndpointsIdent = _.split(replaced, ',');
+      }
+      if (hasDtag(selectedTagkv)) {
+        selectedTagkv = _.map(selectedTagkv, (item) => {
+          return {
+            tagk: item.tagk,
+            tagv: getDTagV(tagkv, item),
+          };
+        });
       }
       const counters = await this.fetchCountersData([
         {
