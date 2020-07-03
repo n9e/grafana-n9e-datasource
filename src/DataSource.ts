@@ -96,7 +96,9 @@ export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
       data: JSON.stringify(reqData),
     })
       .then(res => {
-        return res;
+        return _.filter(res, (item: any) => {
+          return !_.isEmpty(item.values);
+        });
       })
       .catch(err => {})
       .finally(() => {});
@@ -131,6 +133,7 @@ export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
           };
         });
       }
+      if (!selectedMetric && _.isEmpty(selectedEndpointsIdent)) break;
       const counters = await this.fetchCountersData([
         {
           endpoints: selectedEndpointsIdent,
@@ -186,7 +189,6 @@ export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
       });
       data = _.concat(data, seriesData);
     }
-
     return { data };
   }
 
