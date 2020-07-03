@@ -2,11 +2,11 @@
 
 Emm, nothing to say, it is better to install and use it.
 
-![image](https://user-images.githubusercontent.com/7424634/83121099-78fcdc80-a104-11ea-8b95-4935bde6b7dd.png)
+<img height="300" src="https://user-images.githubusercontent.com/7424634/83121099-78fcdc80-a104-11ea-8b95-4935bde6b7dd.png" />
 
 ## Dependencies
 
-Grafana >= 7.x.x
+Grafana >= 7.x.x  
 Nightingale >= V2.4.1
 
 ## Installation
@@ -50,7 +50,11 @@ Token: the token u just created in monapi.yml
 | Node | Query | Node | off | off |  
 | Endpoints | Query | Endpoints BY $Node | on | on |  
 
-> Variable names are fixed.
+> Variable names and query value are fixed.
+
+#### QueryEditor
+
+<img width="200" src="https://user-images.githubusercontent.com/7424634/83507463-2bfd7980-a4fb-11ea-8331-4bcb5bb64267.png" />
 
 ## Development
 1. Install dependencies

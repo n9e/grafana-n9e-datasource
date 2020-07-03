@@ -133,7 +133,9 @@ export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
           };
         });
       }
-      if (!selectedMetric && _.isEmpty(selectedEndpointsIdent)) break;
+      if (!selectedMetric && _.isEmpty(selectedEndpointsIdent)) {
+        break;
+      }
       const counters = await this.fetchCountersData([
         {
           endpoints: selectedEndpointsIdent,
