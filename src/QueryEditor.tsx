@@ -153,6 +153,7 @@ export class QueryEditor extends PureComponent<Props> {
   }
 
   fetchTagkvData(metrics: Array<string | undefined>, isFirstLoad = false) {
+    const templateSrv = getTemplateSrv();
     const query = _.defaults(this.props.query, defaultQuery);
     let { selectedEndpointsIdent, selectedTagkv } = query;
     const { endpointsData } = this.state;
@@ -160,6 +161,11 @@ export class QueryEditor extends PureComponent<Props> {
     if (hasDtag(selectedEndpointsIdent)) {
       const dTagvKeyword = getDTagvKeyword(selectedEndpointsIdent[0]) as string;
       selectedEndpointsIdent = dFilter(dTagvKeyword, selectedEndpointsIdent[0], endpointsData);
+    } else if (hasVariable(selectedEndpointsIdent)) {
+      const replaced = templateSrv.replace(selectedEndpointsIdent[0], undefined, (result: any) => {
+        return result;
+      });
+      selectedEndpointsIdent = _.split(replaced, ',');
     }
     return this._request({
       url: '/api/index/tagkv',
