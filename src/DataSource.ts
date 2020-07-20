@@ -8,7 +8,8 @@ import {
   FieldType,
 } from '@grafana/data';
 import { BackendSrv, BackendSrvRequest, getTemplateSrv } from '@grafana/runtime';
-import { message } from 'antd';
+// import { message } from 'antd';
+import message from 'antd/lib/message';
 
 import { MyQuery, MyDataSourceOptions, defaultQuery } from './types';
 import { hasDtag, hasVariable, getDTagvKeyword, dFilter, getDTagV } from './Components/Tagkv/utils';

@@ -1,6 +1,9 @@
 import _ from 'lodash';
 import React, { PureComponent } from 'react';
-import { Input, Select, message } from 'antd';
+// import { Input, Select, message } from 'antd';
+import Input from 'antd/lib/input';
+import Select from 'antd/lib/select';
+import message from 'antd/lib/message';
 import { LegacyForms } from '@grafana/ui';
 import { QueryEditorProps } from '@grafana/data';
 import { BackendSrvRequest, getTemplateSrv } from '@grafana/runtime';

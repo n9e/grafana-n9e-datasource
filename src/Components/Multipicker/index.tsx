@@ -17,7 +17,16 @@
  */
 
 import React, { Component } from 'react';
-import { Row, Col, Input, Button, Pagination, Checkbox, Popover, Tag, message } from 'antd';
+// import { Row, Col, Input, Button, Pagination, Checkbox, Popover, Tag, message } from 'antd';
+import Row from 'antd/lib/row';
+import Col from 'antd/lib/col';
+import Input from 'antd/lib/input';
+import Button from 'antd/lib/button';
+import Pagination from 'antd/lib/pagination';
+import Checkbox from 'antd/lib/checkbox';
+import Popover from 'antd/lib/popover';
+import Tag from 'antd/lib/tag';
+import message from 'antd/lib/message';
 import _ from 'lodash';
 
 interface TypeProps {

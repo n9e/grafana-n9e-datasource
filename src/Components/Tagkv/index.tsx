@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 import update from 'react-addons-update';
 import _ from 'lodash';
-import { Input, Button, Modal, Popover, Switch } from 'antd';
+// import { Input, Button, Modal, Popover, Switch } from 'antd';
+import Input from 'antd/lib/input';
+import Button from 'antd/lib/button';
+import Modal from 'antd/lib/modal';
+import Popover from 'antd/lib/popover';
+import Switch from 'antd/lib/switch';
 import Multipicker from '../Multipicker';
 import { hasDtag, sortTagkvs } from './utils';
 import { TypeTagkv } from './types';
