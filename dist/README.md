@@ -11,7 +11,7 @@ Nightingale >= V2.4.1
 
 ## Installation
 ```BASH
-grafana-cli --pluginUrl https://github.com/n9e/grafana-n9e-datasource/archive/v1.3.0.zip plugins install grafana-n9e-datasource
+grafana-cli --pluginUrl https://github.com/n9e/grafana-n9e-datasource/archive/v1.3.1.zip plugins install grafana-n9e-datasource
 ```
 
 ## Configuration

@@ -10218,6 +10218,570 @@ Popover.defaultProps = {
 
 /***/ }),
 
+/***/ "../node_modules/antd/lib/radio/group.js":
+/*!***********************************************!*\
+  !*** ../node_modules/antd/lib/radio/group.js ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+
+var React = _interopRequireWildcard(__webpack_require__(/*! react */ "react"));
+
+var PropTypes = _interopRequireWildcard(__webpack_require__(/*! prop-types */ "../node_modules/prop-types/index.js"));
+
+var _classnames = _interopRequireDefault(__webpack_require__(/*! classnames */ "../node_modules/classnames/index.js"));
+
+var _shallowequal = _interopRequireDefault(__webpack_require__(/*! shallowequal */ "../node_modules/shallowequal/index.js"));
+
+var _reactLifecyclesCompat = __webpack_require__(/*! react-lifecycles-compat */ "../node_modules/react-lifecycles-compat/react-lifecycles-compat.es.js");
+
+var _radio = _interopRequireDefault(__webpack_require__(/*! ./radio */ "../node_modules/antd/lib/radio/radio.js"));
+
+var _configProvider = __webpack_require__(/*! ../config-provider */ "../node_modules/antd/lib/config-provider/index.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function getCheckedValue(children) {
+  var value = null;
+  var matched = false;
+  React.Children.forEach(children, function (radio) {
+    if (radio && radio.props && radio.props.checked) {
+      value = radio.props.value;
+      matched = true;
+    }
+  });
+  return matched ? {
+    value: value
+  } : undefined;
+}
+
+var RadioGroup = /*#__PURE__*/function (_React$Component) {
+  _inherits(RadioGroup, _React$Component);
+
+  var _super = _createSuper(RadioGroup);
+
+  function RadioGroup(props) {
+    var _this;
+
+    _classCallCheck(this, RadioGroup);
+
+    _this = _super.call(this, props);
+
+    _this.onRadioChange = function (ev) {
+      var lastValue = _this.state.value;
+      var value = ev.target.value;
+
+      if (!('value' in _this.props)) {
+        _this.setState({
+          value: value
+        });
+      }
+
+      var onChange = _this.props.onChange;
+
+      if (onChange && value !== lastValue) {
+        onChange(ev);
+      }
+    };
+
+    _this.renderGroup = function (_ref) {
+      var getPrefixCls = _ref.getPrefixCls;
+
+      var _assertThisInitialize = _assertThisInitialized(_this),
+          props = _assertThisInitialize.props;
+
+      var customizePrefixCls = props.prefixCls,
+          _props$className = props.className,
+          className = _props$className === void 0 ? '' : _props$className,
+          options = props.options,
+          buttonStyle = props.buttonStyle;
+      var prefixCls = getPrefixCls('radio', customizePrefixCls);
+      var groupPrefixCls = "".concat(prefixCls, "-group");
+      var classString = (0, _classnames["default"])(groupPrefixCls, "".concat(groupPrefixCls, "-").concat(buttonStyle), _defineProperty({}, "".concat(groupPrefixCls, "-").concat(props.size), props.size), className);
+      var children = props.children; // 如果存在 options, 优先使用
+
+      if (options && options.length > 0) {
+        children = options.map(function (option) {
+          if (typeof option === 'string') {
+            // 此处类型自动推导为 string
+            return /*#__PURE__*/React.createElement(_radio["default"], {
+              key: option,
+              prefixCls: prefixCls,
+              disabled: _this.props.disabled,
+              value: option,
+              checked: _this.state.value === option
+            }, option);
+          } // 此处类型自动推导为 { label: string value: string }
+
+
+          return /*#__PURE__*/React.createElement(_radio["default"], {
+            key: "radio-group-value-options-".concat(option.value),
+            prefixCls: prefixCls,
+            disabled: option.disabled || _this.props.disabled,
+            value: option.value,
+            checked: _this.state.value === option.value
+          }, option.label);
+        });
+      }
+
+      return /*#__PURE__*/React.createElement("div", {
+        className: classString,
+        style: props.style,
+        onMouseEnter: props.onMouseEnter,
+        onMouseLeave: props.onMouseLeave,
+        id: props.id
+      }, children);
+    };
+
+    var value;
+
+    if ('value' in props) {
+      value = props.value;
+    } else if ('defaultValue' in props) {
+      value = props.defaultValue;
+    } else {
+      var checkedValue = getCheckedValue(props.children);
+      value = checkedValue && checkedValue.value;
+    }
+
+    _this.state = {
+      value: value
+    };
+    return _this;
+  }
+
+  _createClass(RadioGroup, [{
+    key: "getChildContext",
+    value: function getChildContext() {
+      return {
+        radioGroup: {
+          onChange: this.onRadioChange,
+          value: this.state.value,
+          disabled: this.props.disabled,
+          name: this.props.name
+        }
+      };
+    }
+  }, {
+    key: "shouldComponentUpdate",
+    value: function shouldComponentUpdate(nextProps, nextState) {
+      return !(0, _shallowequal["default"])(this.props, nextProps) || !(0, _shallowequal["default"])(this.state, nextState);
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      return /*#__PURE__*/React.createElement(_configProvider.ConfigConsumer, null, this.renderGroup);
+    }
+  }], [{
+    key: "getDerivedStateFromProps",
+    value: function getDerivedStateFromProps(nextProps) {
+      if ('value' in nextProps) {
+        return {
+          value: nextProps.value
+        };
+      }
+
+      var checkedValue = getCheckedValue(nextProps.children);
+
+      if (checkedValue) {
+        return {
+          value: checkedValue.value
+        };
+      }
+
+      return null;
+    }
+  }]);
+
+  return RadioGroup;
+}(React.Component);
+
+RadioGroup.defaultProps = {
+  buttonStyle: 'outline'
+};
+RadioGroup.childContextTypes = {
+  radioGroup: PropTypes.any
+};
+(0, _reactLifecyclesCompat.polyfill)(RadioGroup);
+var _default = RadioGroup;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../node_modules/antd/lib/radio/index.js":
+/*!***********************************************!*\
+  !*** ../node_modules/antd/lib/radio/index.js ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+Object.defineProperty(exports, "Group", {
+  enumerable: true,
+  get: function get() {
+    return _group["default"];
+  }
+});
+Object.defineProperty(exports, "Button", {
+  enumerable: true,
+  get: function get() {
+    return _radioButton["default"];
+  }
+});
+exports["default"] = void 0;
+
+var _radio = _interopRequireDefault(__webpack_require__(/*! ./radio */ "../node_modules/antd/lib/radio/radio.js"));
+
+var _group = _interopRequireDefault(__webpack_require__(/*! ./group */ "../node_modules/antd/lib/radio/group.js"));
+
+var _radioButton = _interopRequireDefault(__webpack_require__(/*! ./radioButton */ "../node_modules/antd/lib/radio/radioButton.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+_radio["default"].Button = _radioButton["default"];
+_radio["default"].Group = _group["default"];
+var _default = _radio["default"];
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "../node_modules/antd/lib/radio/radio.js":
+/*!***********************************************!*\
+  !*** ../node_modules/antd/lib/radio/radio.js ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+
+var React = _interopRequireWildcard(__webpack_require__(/*! react */ "react"));
+
+var PropTypes = _interopRequireWildcard(__webpack_require__(/*! prop-types */ "../node_modules/prop-types/index.js"));
+
+var _rcCheckbox = _interopRequireDefault(__webpack_require__(/*! rc-checkbox */ "../node_modules/rc-checkbox/es/index.js"));
+
+var _classnames = _interopRequireDefault(__webpack_require__(/*! classnames */ "../node_modules/classnames/index.js"));
+
+var _shallowequal = _interopRequireDefault(__webpack_require__(/*! shallowequal */ "../node_modules/shallowequal/index.js"));
+
+var _configProvider = __webpack_require__(/*! ../config-provider */ "../node_modules/antd/lib/config-provider/index.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+var __rest = void 0 && (void 0).__rest || function (s, e) {
+  var t = {};
+
+  for (var p in s) {
+    if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];
+  }
+
+  if (s != null && typeof Object.getOwnPropertySymbols === "function") for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+    if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i])) t[p[i]] = s[p[i]];
+  }
+  return t;
+};
+
+var Radio = /*#__PURE__*/function (_React$Component) {
+  _inherits(Radio, _React$Component);
+
+  var _super = _createSuper(Radio);
+
+  function Radio() {
+    var _this;
+
+    _classCallCheck(this, Radio);
+
+    _this = _super.apply(this, arguments);
+
+    _this.saveCheckbox = function (node) {
+      _this.rcCheckbox = node;
+    };
+
+    _this.onChange = function (e) {
+      if (_this.props.onChange) {
+        _this.props.onChange(e);
+      }
+
+      if (_this.context.radioGroup && _this.context.radioGroup.onChange) {
+        _this.context.radioGroup.onChange(e);
+      }
+    };
+
+    _this.renderRadio = function (_ref) {
+      var _classNames;
+
+      var getPrefixCls = _ref.getPrefixCls;
+
+      var _assertThisInitialize = _assertThisInitialized(_this),
+          props = _assertThisInitialize.props,
+          context = _assertThisInitialize.context;
+
+      var customizePrefixCls = props.prefixCls,
+          className = props.className,
+          children = props.children,
+          style = props.style,
+          restProps = __rest(props, ["prefixCls", "className", "children", "style"]);
+
+      var radioGroup = context.radioGroup;
+      var prefixCls = getPrefixCls('radio', customizePrefixCls);
+
+      var radioProps = _extends({}, restProps);
+
+      if (radioGroup) {
+        radioProps.name = radioGroup.name;
+        radioProps.onChange = _this.onChange;
+        radioProps.checked = props.value === radioGroup.value;
+        radioProps.disabled = props.disabled || radioGroup.disabled;
+      }
+
+      var wrapperClassString = (0, _classnames["default"])(className, (_classNames = {}, _defineProperty(_classNames, "".concat(prefixCls, "-wrapper"), true), _defineProperty(_classNames, "".concat(prefixCls, "-wrapper-checked"), radioProps.checked), _defineProperty(_classNames, "".concat(prefixCls, "-wrapper-disabled"), radioProps.disabled), _classNames));
+      return (
+        /*#__PURE__*/
+        // eslint-disable-next-line jsx-a11y/label-has-associated-control
+        React.createElement("label", {
+          className: wrapperClassString,
+          style: style,
+          onMouseEnter: props.onMouseEnter,
+          onMouseLeave: props.onMouseLeave
+        }, /*#__PURE__*/React.createElement(_rcCheckbox["default"], _extends({}, radioProps, {
+          prefixCls: prefixCls,
+          ref: _this.saveCheckbox
+        })), children !== undefined ? /*#__PURE__*/React.createElement("span", null, children) : null)
+      );
+    };
+
+    return _this;
+  }
+
+  _createClass(Radio, [{
+    key: "shouldComponentUpdate",
+    value: function shouldComponentUpdate(nextProps, nextState, nextContext) {
+      return !(0, _shallowequal["default"])(this.props, nextProps) || !(0, _shallowequal["default"])(this.state, nextState) || !(0, _shallowequal["default"])(this.context.radioGroup, nextContext.radioGroup);
+    }
+  }, {
+    key: "focus",
+    value: function focus() {
+      this.rcCheckbox.focus();
+    }
+  }, {
+    key: "blur",
+    value: function blur() {
+      this.rcCheckbox.blur();
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      return /*#__PURE__*/React.createElement(_configProvider.ConfigConsumer, null, this.renderRadio);
+    }
+  }]);
+
+  return Radio;
+}(React.Component);
+
+exports["default"] = Radio;
+Radio.defaultProps = {
+  type: 'radio'
+};
+Radio.contextTypes = {
+  radioGroup: PropTypes.any
+};
+
+/***/ }),
+
+/***/ "../node_modules/antd/lib/radio/radioButton.js":
+/*!*****************************************************!*\
+  !*** ../node_modules/antd/lib/radio/radioButton.js ***!
+  \*****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+
+var React = _interopRequireWildcard(__webpack_require__(/*! react */ "react"));
+
+var PropTypes = _interopRequireWildcard(__webpack_require__(/*! prop-types */ "../node_modules/prop-types/index.js"));
+
+var _radio = _interopRequireDefault(__webpack_require__(/*! ./radio */ "../node_modules/antd/lib/radio/radio.js"));
+
+var _configProvider = __webpack_require__(/*! ../config-provider */ "../node_modules/antd/lib/config-provider/index.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+var __rest = void 0 && (void 0).__rest || function (s, e) {
+  var t = {};
+
+  for (var p in s) {
+    if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];
+  }
+
+  if (s != null && typeof Object.getOwnPropertySymbols === "function") for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+    if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i])) t[p[i]] = s[p[i]];
+  }
+  return t;
+};
+
+var RadioButton = /*#__PURE__*/function (_React$Component) {
+  _inherits(RadioButton, _React$Component);
+
+  var _super = _createSuper(RadioButton);
+
+  function RadioButton() {
+    var _this;
+
+    _classCallCheck(this, RadioButton);
+
+    _this = _super.apply(this, arguments);
+
+    _this.renderRadioButton = function (_ref) {
+      var getPrefixCls = _ref.getPrefixCls;
+
+      var _a = _this.props,
+          customizePrefixCls = _a.prefixCls,
+          radioProps = __rest(_a, ["prefixCls"]);
+
+      var prefixCls = getPrefixCls('radio-button', customizePrefixCls);
+
+      if (_this.context.radioGroup) {
+        radioProps.checked = _this.props.value === _this.context.radioGroup.value;
+        radioProps.disabled = _this.props.disabled || _this.context.radioGroup.disabled;
+      }
+
+      return /*#__PURE__*/React.createElement(_radio["default"], _extends({
+        prefixCls: prefixCls
+      }, radioProps));
+    };
+
+    return _this;
+  }
+
+  _createClass(RadioButton, [{
+    key: "render",
+    value: function render() {
+      return /*#__PURE__*/React.createElement(_configProvider.ConfigConsumer, null, this.renderRadioButton);
+    }
+  }]);
+
+  return RadioButton;
+}(React.Component);
+
+exports["default"] = RadioButton;
+RadioButton.contextTypes = {
+  radioGroup: PropTypes.any
+};
+
+/***/ }),
+
 /***/ "../node_modules/antd/lib/row/index.js":
 /*!*********************************************!*\
   !*** ../node_modules/antd/lib/row/index.js ***!
@@ -17916,6 +18480,29 @@ module.exports = arraySome;
 
 /***/ }),
 
+/***/ "../node_modules/lodash/_asciiToArray.js":
+/*!***********************************************!*\
+  !*** ../node_modules/lodash/_asciiToArray.js ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/**
+ * Converts an ASCII `string` to an array.
+ *
+ * @private
+ * @param {string} string The string to convert.
+ * @returns {Array} Returns the converted array.
+ */
+function asciiToArray(string) {
+  return string.split('');
+}
+
+module.exports = asciiToArray;
+
+
+/***/ }),
+
 /***/ "../node_modules/lodash/_assignValue.js":
 /*!**********************************************!*\
   !*** ../node_modules/lodash/_assignValue.js ***!
@@ -18296,6 +18883,63 @@ module.exports = baseCreate;
 
 /***/ }),
 
+/***/ "../node_modules/lodash/_baseEach.js":
+/*!*******************************************!*\
+  !*** ../node_modules/lodash/_baseEach.js ***!
+  \*******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var baseForOwn = __webpack_require__(/*! ./_baseForOwn */ "../node_modules/lodash/_baseForOwn.js"),
+    createBaseEach = __webpack_require__(/*! ./_createBaseEach */ "../node_modules/lodash/_createBaseEach.js");
+
+/**
+ * The base implementation of `_.forEach` without support for iteratee shorthands.
+ *
+ * @private
+ * @param {Array|Object} collection The collection to iterate over.
+ * @param {Function} iteratee The function invoked per iteration.
+ * @returns {Array|Object} Returns `collection`.
+ */
+var baseEach = createBaseEach(baseForOwn);
+
+module.exports = baseEach;
+
+
+/***/ }),
+
+/***/ "../node_modules/lodash/_baseFilter.js":
+/*!*********************************************!*\
+  !*** ../node_modules/lodash/_baseFilter.js ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var baseEach = __webpack_require__(/*! ./_baseEach */ "../node_modules/lodash/_baseEach.js");
+
+/**
+ * The base implementation of `_.filter` without support for iteratee shorthands.
+ *
+ * @private
+ * @param {Array|Object} collection The collection to iterate over.
+ * @param {Function} predicate The function invoked per iteration.
+ * @returns {Array} Returns the new filtered array.
+ */
+function baseFilter(collection, predicate) {
+  var result = [];
+  baseEach(collection, function(value, index, collection) {
+    if (predicate(value, index, collection)) {
+      result.push(value);
+    }
+  });
+  return result;
+}
+
+module.exports = baseFilter;
+
+
+/***/ }),
+
 /***/ "../node_modules/lodash/_baseFindIndex.js":
 /*!************************************************!*\
   !*** ../node_modules/lodash/_baseFindIndex.js ***!
@@ -18327,6 +18971,60 @@ function baseFindIndex(array, predicate, fromIndex, fromRight) {
 }
 
 module.exports = baseFindIndex;
+
+
+/***/ }),
+
+/***/ "../node_modules/lodash/_baseFor.js":
+/*!******************************************!*\
+  !*** ../node_modules/lodash/_baseFor.js ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var createBaseFor = __webpack_require__(/*! ./_createBaseFor */ "../node_modules/lodash/_createBaseFor.js");
+
+/**
+ * The base implementation of `baseForOwn` which iterates over `object`
+ * properties returned by `keysFunc` and invokes `iteratee` for each property.
+ * Iteratee functions may exit iteration early by explicitly returning `false`.
+ *
+ * @private
+ * @param {Object} object The object to iterate over.
+ * @param {Function} iteratee The function invoked per iteration.
+ * @param {Function} keysFunc The function to get the keys of `object`.
+ * @returns {Object} Returns `object`.
+ */
+var baseFor = createBaseFor();
+
+module.exports = baseFor;
+
+
+/***/ }),
+
+/***/ "../node_modules/lodash/_baseForOwn.js":
+/*!*********************************************!*\
+  !*** ../node_modules/lodash/_baseForOwn.js ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var baseFor = __webpack_require__(/*! ./_baseFor */ "../node_modules/lodash/_baseFor.js"),
+    keys = __webpack_require__(/*! ./keys */ "../node_modules/lodash/keys.js");
+
+/**
+ * The base implementation of `_.forOwn` without support for iteratee shorthands.
+ *
+ * @private
+ * @param {Object} object The object to iterate over.
+ * @param {Function} iteratee The function invoked per iteration.
+ * @returns {Object} Returns `object`.
+ */
+function baseForOwn(object, iteratee) {
+  return object && baseFor(object, iteratee, keys);
+}
+
+module.exports = baseForOwn;
 
 
 /***/ }),
@@ -18782,6 +19480,35 @@ module.exports = baseIsNative;
 
 /***/ }),
 
+/***/ "../node_modules/lodash/_baseIsRegExp.js":
+/*!***********************************************!*\
+  !*** ../node_modules/lodash/_baseIsRegExp.js ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var baseGetTag = __webpack_require__(/*! ./_baseGetTag */ "../node_modules/lodash/_baseGetTag.js"),
+    isObjectLike = __webpack_require__(/*! ./isObjectLike */ "../node_modules/lodash/isObjectLike.js");
+
+/** `Object#toString` result references. */
+var regexpTag = '[object RegExp]';
+
+/**
+ * The base implementation of `_.isRegExp` without Node.js optimizations.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a regexp, else `false`.
+ */
+function baseIsRegExp(value) {
+  return isObjectLike(value) && baseGetTag(value) == regexpTag;
+}
+
+module.exports = baseIsRegExp;
+
+
+/***/ }),
+
 /***/ "../node_modules/lodash/_baseIsSet.js":
 /*!********************************************!*\
   !*** ../node_modules/lodash/_baseIsSet.js ***!
@@ -19009,6 +19736,39 @@ module.exports = baseKeysIn;
 
 /***/ }),
 
+/***/ "../node_modules/lodash/_baseMap.js":
+/*!******************************************!*\
+  !*** ../node_modules/lodash/_baseMap.js ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var baseEach = __webpack_require__(/*! ./_baseEach */ "../node_modules/lodash/_baseEach.js"),
+    isArrayLike = __webpack_require__(/*! ./isArrayLike */ "../node_modules/lodash/isArrayLike.js");
+
+/**
+ * The base implementation of `_.map` without support for iteratee shorthands.
+ *
+ * @private
+ * @param {Array|Object} collection The collection to iterate over.
+ * @param {Function} iteratee The function invoked per iteration.
+ * @returns {Array} Returns the new mapped array.
+ */
+function baseMap(collection, iteratee) {
+  var index = -1,
+      result = isArrayLike(collection) ? Array(collection.length) : [];
+
+  baseEach(collection, function(value, key, collection) {
+    result[++index] = iteratee(value, key, collection);
+  });
+  return result;
+}
+
+module.exports = baseMap;
+
+
+/***/ }),
+
 /***/ "../node_modules/lodash/_baseMatches.js":
 /*!**********************************************!*\
   !*** ../node_modules/lodash/_baseMatches.js ***!
@@ -19134,6 +19894,48 @@ function basePropertyDeep(path) {
 }
 
 module.exports = basePropertyDeep;
+
+
+/***/ }),
+
+/***/ "../node_modules/lodash/_baseSlice.js":
+/*!********************************************!*\
+  !*** ../node_modules/lodash/_baseSlice.js ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/**
+ * The base implementation of `_.slice` without an iteratee call guard.
+ *
+ * @private
+ * @param {Array} array The array to slice.
+ * @param {number} [start=0] The start position.
+ * @param {number} [end=array.length] The end position.
+ * @returns {Array} Returns the slice of `array`.
+ */
+function baseSlice(array, start, end) {
+  var index = -1,
+      length = array.length;
+
+  if (start < 0) {
+    start = -start > length ? 0 : (length + start);
+  }
+  end = end > length ? length : end;
+  if (end < 0) {
+    end += length;
+  }
+  length = start > end ? 0 : ((end - start) >>> 0);
+  start >>>= 0;
+
+  var result = Array(length);
+  while (++index < length) {
+    result[index] = array[index + start];
+  }
+  return result;
+}
+
+module.exports = baseSlice;
 
 
 /***/ }),
@@ -19369,6 +20171,35 @@ function castPath(value, object) {
 }
 
 module.exports = castPath;
+
+
+/***/ }),
+
+/***/ "../node_modules/lodash/_castSlice.js":
+/*!********************************************!*\
+  !*** ../node_modules/lodash/_castSlice.js ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var baseSlice = __webpack_require__(/*! ./_baseSlice */ "../node_modules/lodash/_baseSlice.js");
+
+/**
+ * Casts `array` to a slice if it's needed.
+ *
+ * @private
+ * @param {Array} array The array to inspect.
+ * @param {number} start The start position.
+ * @param {number} [end=array.length] The end position.
+ * @returns {Array} Returns the cast slice.
+ */
+function castSlice(array, start, end) {
+  var length = array.length;
+  end = end === undefined ? length : end;
+  return (!start && end >= length) ? array : baseSlice(array, start, end);
+}
+
+module.exports = castSlice;
 
 
 /***/ }),
@@ -19707,6 +20538,85 @@ var root = __webpack_require__(/*! ./_root */ "../node_modules/lodash/_root.js")
 var coreJsData = root['__core-js_shared__'];
 
 module.exports = coreJsData;
+
+
+/***/ }),
+
+/***/ "../node_modules/lodash/_createBaseEach.js":
+/*!*************************************************!*\
+  !*** ../node_modules/lodash/_createBaseEach.js ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var isArrayLike = __webpack_require__(/*! ./isArrayLike */ "../node_modules/lodash/isArrayLike.js");
+
+/**
+ * Creates a `baseEach` or `baseEachRight` function.
+ *
+ * @private
+ * @param {Function} eachFunc The function to iterate over a collection.
+ * @param {boolean} [fromRight] Specify iterating from right to left.
+ * @returns {Function} Returns the new base function.
+ */
+function createBaseEach(eachFunc, fromRight) {
+  return function(collection, iteratee) {
+    if (collection == null) {
+      return collection;
+    }
+    if (!isArrayLike(collection)) {
+      return eachFunc(collection, iteratee);
+    }
+    var length = collection.length,
+        index = fromRight ? length : -1,
+        iterable = Object(collection);
+
+    while ((fromRight ? index-- : ++index < length)) {
+      if (iteratee(iterable[index], index, iterable) === false) {
+        break;
+      }
+    }
+    return collection;
+  };
+}
+
+module.exports = createBaseEach;
+
+
+/***/ }),
+
+/***/ "../node_modules/lodash/_createBaseFor.js":
+/*!************************************************!*\
+  !*** ../node_modules/lodash/_createBaseFor.js ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/**
+ * Creates a base function for methods like `_.forIn` and `_.forOwn`.
+ *
+ * @private
+ * @param {boolean} [fromRight] Specify iterating from right to left.
+ * @returns {Function} Returns the new base function.
+ */
+function createBaseFor(fromRight) {
+  return function(object, iteratee, keysFunc) {
+    var index = -1,
+        iterable = Object(object),
+        props = keysFunc(object),
+        length = props.length;
+
+    while (length--) {
+      var key = props[fromRight ? length : ++index];
+      if (iteratee(iterable[key], key, iterable) === false) {
+        break;
+      }
+    }
+    return object;
+  };
+}
+
+module.exports = createBaseFor;
 
 
 /***/ }),
@@ -20543,6 +21453,43 @@ module.exports = hasPath;
 
 /***/ }),
 
+/***/ "../node_modules/lodash/_hasUnicode.js":
+/*!*********************************************!*\
+  !*** ../node_modules/lodash/_hasUnicode.js ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/** Used to compose unicode character classes. */
+var rsAstralRange = '\\ud800-\\udfff',
+    rsComboMarksRange = '\\u0300-\\u036f',
+    reComboHalfMarksRange = '\\ufe20-\\ufe2f',
+    rsComboSymbolsRange = '\\u20d0-\\u20ff',
+    rsComboRange = rsComboMarksRange + reComboHalfMarksRange + rsComboSymbolsRange,
+    rsVarRange = '\\ufe0e\\ufe0f';
+
+/** Used to compose unicode capture groups. */
+var rsZWJ = '\\u200d';
+
+/** Used to detect strings with [zero-width joiners or code points from the astral planes](http://eev.ee/blog/2015/09/12/dark-corners-of-unicode/). */
+var reHasUnicode = RegExp('[' + rsZWJ + rsAstralRange  + rsComboRange + rsVarRange + ']');
+
+/**
+ * Checks if `string` contains Unicode symbols.
+ *
+ * @private
+ * @param {string} string The string to inspect.
+ * @returns {boolean} Returns `true` if a symbol is found, else `false`.
+ */
+function hasUnicode(string) {
+  return reHasUnicode.test(string);
+}
+
+module.exports = hasUnicode;
+
+
+/***/ }),
+
 /***/ "../node_modules/lodash/_hashClear.js":
 /*!********************************************!*\
   !*** ../node_modules/lodash/_hashClear.js ***!
@@ -20892,6 +21839,47 @@ function isIndex(value, length) {
 }
 
 module.exports = isIndex;
+
+
+/***/ }),
+
+/***/ "../node_modules/lodash/_isIterateeCall.js":
+/*!*************************************************!*\
+  !*** ../node_modules/lodash/_isIterateeCall.js ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var eq = __webpack_require__(/*! ./eq */ "../node_modules/lodash/eq.js"),
+    isArrayLike = __webpack_require__(/*! ./isArrayLike */ "../node_modules/lodash/isArrayLike.js"),
+    isIndex = __webpack_require__(/*! ./_isIndex */ "../node_modules/lodash/_isIndex.js"),
+    isObject = __webpack_require__(/*! ./isObject */ "../node_modules/lodash/isObject.js");
+
+/**
+ * Checks if the given arguments are from an iteratee call.
+ *
+ * @private
+ * @param {*} value The potential iteratee value argument.
+ * @param {*} index The potential iteratee index or key argument.
+ * @param {*} object The potential iteratee object argument.
+ * @returns {boolean} Returns `true` if the arguments are from an iteratee call,
+ *  else `false`.
+ */
+function isIterateeCall(value, index, object) {
+  if (!isObject(object)) {
+    return false;
+  }
+  var type = typeof index;
+  if (type == 'number'
+        ? (isArrayLike(object) && isIndex(index, object.length))
+        : (type == 'string' && index in object)
+      ) {
+    return eq(object[index], value);
+  }
+  return false;
+}
+
+module.exports = isIterateeCall;
 
 
 /***/ }),
@@ -21877,6 +22865,35 @@ module.exports = stackSet;
 
 /***/ }),
 
+/***/ "../node_modules/lodash/_stringToArray.js":
+/*!************************************************!*\
+  !*** ../node_modules/lodash/_stringToArray.js ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var asciiToArray = __webpack_require__(/*! ./_asciiToArray */ "../node_modules/lodash/_asciiToArray.js"),
+    hasUnicode = __webpack_require__(/*! ./_hasUnicode */ "../node_modules/lodash/_hasUnicode.js"),
+    unicodeToArray = __webpack_require__(/*! ./_unicodeToArray */ "../node_modules/lodash/_unicodeToArray.js");
+
+/**
+ * Converts `string` to an array.
+ *
+ * @private
+ * @param {string} string The string to convert.
+ * @returns {Array} Returns the converted array.
+ */
+function stringToArray(string) {
+  return hasUnicode(string)
+    ? unicodeToArray(string)
+    : asciiToArray(string);
+}
+
+module.exports = stringToArray;
+
+
+/***/ }),
+
 /***/ "../node_modules/lodash/_stringToPath.js":
 /*!***********************************************!*\
   !*** ../node_modules/lodash/_stringToPath.js ***!
@@ -21984,6 +23001,57 @@ module.exports = toSource;
 
 /***/ }),
 
+/***/ "../node_modules/lodash/_unicodeToArray.js":
+/*!*************************************************!*\
+  !*** ../node_modules/lodash/_unicodeToArray.js ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/** Used to compose unicode character classes. */
+var rsAstralRange = '\\ud800-\\udfff',
+    rsComboMarksRange = '\\u0300-\\u036f',
+    reComboHalfMarksRange = '\\ufe20-\\ufe2f',
+    rsComboSymbolsRange = '\\u20d0-\\u20ff',
+    rsComboRange = rsComboMarksRange + reComboHalfMarksRange + rsComboSymbolsRange,
+    rsVarRange = '\\ufe0e\\ufe0f';
+
+/** Used to compose unicode capture groups. */
+var rsAstral = '[' + rsAstralRange + ']',
+    rsCombo = '[' + rsComboRange + ']',
+    rsFitz = '\\ud83c[\\udffb-\\udfff]',
+    rsModifier = '(?:' + rsCombo + '|' + rsFitz + ')',
+    rsNonAstral = '[^' + rsAstralRange + ']',
+    rsRegional = '(?:\\ud83c[\\udde6-\\uddff]){2}',
+    rsSurrPair = '[\\ud800-\\udbff][\\udc00-\\udfff]',
+    rsZWJ = '\\u200d';
+
+/** Used to compose unicode regexes. */
+var reOptMod = rsModifier + '?',
+    rsOptVar = '[' + rsVarRange + ']?',
+    rsOptJoin = '(?:' + rsZWJ + '(?:' + [rsNonAstral, rsRegional, rsSurrPair].join('|') + ')' + rsOptVar + reOptMod + ')*',
+    rsSeq = rsOptVar + reOptMod + rsOptJoin,
+    rsSymbol = '(?:' + [rsNonAstral + rsCombo + '?', rsCombo, rsRegional, rsSurrPair, rsAstral].join('|') + ')';
+
+/** Used to match [string symbols](https://mathiasbynens.be/notes/javascript-unicode). */
+var reUnicode = RegExp(rsFitz + '(?=' + rsFitz + ')|' + rsSymbol + rsSeq, 'g');
+
+/**
+ * Converts a Unicode `string` to an array.
+ *
+ * @private
+ * @param {string} string The string to convert.
+ * @returns {Array} Returns the converted array.
+ */
+function unicodeToArray(string) {
+  return string.match(reUnicode) || [];
+}
+
+module.exports = unicodeToArray;
+
+
+/***/ }),
+
 /***/ "../node_modules/lodash/cloneDeep.js":
 /*!*******************************************!*\
   !*** ../node_modules/lodash/cloneDeep.js ***!
@@ -22068,6 +23136,65 @@ function eq(value, other) {
 }
 
 module.exports = eq;
+
+
+/***/ }),
+
+/***/ "../node_modules/lodash/filter.js":
+/*!****************************************!*\
+  !*** ../node_modules/lodash/filter.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var arrayFilter = __webpack_require__(/*! ./_arrayFilter */ "../node_modules/lodash/_arrayFilter.js"),
+    baseFilter = __webpack_require__(/*! ./_baseFilter */ "../node_modules/lodash/_baseFilter.js"),
+    baseIteratee = __webpack_require__(/*! ./_baseIteratee */ "../node_modules/lodash/_baseIteratee.js"),
+    isArray = __webpack_require__(/*! ./isArray */ "../node_modules/lodash/isArray.js");
+
+/**
+ * Iterates over elements of `collection`, returning an array of all elements
+ * `predicate` returns truthy for. The predicate is invoked with three
+ * arguments: (value, index|key, collection).
+ *
+ * **Note:** Unlike `_.remove`, this method returns a new array.
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Collection
+ * @param {Array|Object} collection The collection to iterate over.
+ * @param {Function} [predicate=_.identity] The function invoked per iteration.
+ * @returns {Array} Returns the new filtered array.
+ * @see _.reject
+ * @example
+ *
+ * var users = [
+ *   { 'user': 'barney', 'age': 36, 'active': true },
+ *   { 'user': 'fred',   'age': 40, 'active': false }
+ * ];
+ *
+ * _.filter(users, function(o) { return !o.active; });
+ * // => objects for ['fred']
+ *
+ * // The `_.matches` iteratee shorthand.
+ * _.filter(users, { 'age': 36, 'active': true });
+ * // => objects for ['barney']
+ *
+ * // The `_.matchesProperty` iteratee shorthand.
+ * _.filter(users, ['active', false]);
+ * // => objects for ['fred']
+ *
+ * // The `_.property` iteratee shorthand.
+ * _.filter(users, 'active');
+ * // => objects for ['barney']
+ */
+function filter(collection, predicate) {
+  var func = isArray(collection) ? arrayFilter : baseFilter;
+  return func(collection, baseIteratee(predicate, 3));
+}
+
+module.exports = filter;
 
 
 /***/ }),
@@ -22490,6 +23617,94 @@ module.exports = isBuffer;
 
 /***/ }),
 
+/***/ "../node_modules/lodash/isEmpty.js":
+/*!*****************************************!*\
+  !*** ../node_modules/lodash/isEmpty.js ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var baseKeys = __webpack_require__(/*! ./_baseKeys */ "../node_modules/lodash/_baseKeys.js"),
+    getTag = __webpack_require__(/*! ./_getTag */ "../node_modules/lodash/_getTag.js"),
+    isArguments = __webpack_require__(/*! ./isArguments */ "../node_modules/lodash/isArguments.js"),
+    isArray = __webpack_require__(/*! ./isArray */ "../node_modules/lodash/isArray.js"),
+    isArrayLike = __webpack_require__(/*! ./isArrayLike */ "../node_modules/lodash/isArrayLike.js"),
+    isBuffer = __webpack_require__(/*! ./isBuffer */ "../node_modules/lodash/isBuffer.js"),
+    isPrototype = __webpack_require__(/*! ./_isPrototype */ "../node_modules/lodash/_isPrototype.js"),
+    isTypedArray = __webpack_require__(/*! ./isTypedArray */ "../node_modules/lodash/isTypedArray.js");
+
+/** `Object#toString` result references. */
+var mapTag = '[object Map]',
+    setTag = '[object Set]';
+
+/** Used for built-in method references. */
+var objectProto = Object.prototype;
+
+/** Used to check objects for own properties. */
+var hasOwnProperty = objectProto.hasOwnProperty;
+
+/**
+ * Checks if `value` is an empty object, collection, map, or set.
+ *
+ * Objects are considered empty if they have no own enumerable string keyed
+ * properties.
+ *
+ * Array-like values such as `arguments` objects, arrays, buffers, strings, or
+ * jQuery-like collections are considered empty if they have a `length` of `0`.
+ * Similarly, maps and sets are considered empty if they have a `size` of `0`.
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is empty, else `false`.
+ * @example
+ *
+ * _.isEmpty(null);
+ * // => true
+ *
+ * _.isEmpty(true);
+ * // => true
+ *
+ * _.isEmpty(1);
+ * // => true
+ *
+ * _.isEmpty([1, 2, 3]);
+ * // => false
+ *
+ * _.isEmpty({ 'a': 1 });
+ * // => false
+ */
+function isEmpty(value) {
+  if (value == null) {
+    return true;
+  }
+  if (isArrayLike(value) &&
+      (isArray(value) || typeof value == 'string' || typeof value.splice == 'function' ||
+        isBuffer(value) || isTypedArray(value) || isArguments(value))) {
+    return !value.length;
+  }
+  var tag = getTag(value);
+  if (tag == mapTag || tag == setTag) {
+    return !value.size;
+  }
+  if (isPrototype(value)) {
+    return !baseKeys(value).length;
+  }
+  for (var key in value) {
+    if (hasOwnProperty.call(value, key)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+module.exports = isEmpty;
+
+
+/***/ }),
+
 /***/ "../node_modules/lodash/isEqual.js":
 /*!*****************************************!*\
   !*** ../node_modules/lodash/isEqual.js ***!
@@ -22750,6 +23965,44 @@ module.exports = isObjectLike;
 
 /***/ }),
 
+/***/ "../node_modules/lodash/isRegExp.js":
+/*!******************************************!*\
+  !*** ../node_modules/lodash/isRegExp.js ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var baseIsRegExp = __webpack_require__(/*! ./_baseIsRegExp */ "../node_modules/lodash/_baseIsRegExp.js"),
+    baseUnary = __webpack_require__(/*! ./_baseUnary */ "../node_modules/lodash/_baseUnary.js"),
+    nodeUtil = __webpack_require__(/*! ./_nodeUtil */ "../node_modules/lodash/_nodeUtil.js");
+
+/* Node.js helper references. */
+var nodeIsRegExp = nodeUtil && nodeUtil.isRegExp;
+
+/**
+ * Checks if `value` is classified as a `RegExp` object.
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a regexp, else `false`.
+ * @example
+ *
+ * _.isRegExp(/abc/);
+ * // => true
+ *
+ * _.isRegExp('/abc/');
+ * // => false
+ */
+var isRegExp = nodeIsRegExp ? baseUnary(nodeIsRegExp) : baseIsRegExp;
+
+module.exports = isRegExp;
+
+
+/***/ }),
+
 /***/ "../node_modules/lodash/isSet.js":
 /*!***************************************!*\
   !*** ../node_modules/lodash/isSet.js ***!
@@ -22957,6 +24210,70 @@ module.exports = keysIn;
 
 /***/ }),
 
+/***/ "../node_modules/lodash/map.js":
+/*!*************************************!*\
+  !*** ../node_modules/lodash/map.js ***!
+  \*************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var arrayMap = __webpack_require__(/*! ./_arrayMap */ "../node_modules/lodash/_arrayMap.js"),
+    baseIteratee = __webpack_require__(/*! ./_baseIteratee */ "../node_modules/lodash/_baseIteratee.js"),
+    baseMap = __webpack_require__(/*! ./_baseMap */ "../node_modules/lodash/_baseMap.js"),
+    isArray = __webpack_require__(/*! ./isArray */ "../node_modules/lodash/isArray.js");
+
+/**
+ * Creates an array of values by running each element in `collection` thru
+ * `iteratee`. The iteratee is invoked with three arguments:
+ * (value, index|key, collection).
+ *
+ * Many lodash methods are guarded to work as iteratees for methods like
+ * `_.every`, `_.filter`, `_.map`, `_.mapValues`, `_.reject`, and `_.some`.
+ *
+ * The guarded methods are:
+ * `ary`, `chunk`, `curry`, `curryRight`, `drop`, `dropRight`, `every`,
+ * `fill`, `invert`, `parseInt`, `random`, `range`, `rangeRight`, `repeat`,
+ * `sampleSize`, `slice`, `some`, `sortBy`, `split`, `take`, `takeRight`,
+ * `template`, `trim`, `trimEnd`, `trimStart`, and `words`
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Collection
+ * @param {Array|Object} collection The collection to iterate over.
+ * @param {Function} [iteratee=_.identity] The function invoked per iteration.
+ * @returns {Array} Returns the new mapped array.
+ * @example
+ *
+ * function square(n) {
+ *   return n * n;
+ * }
+ *
+ * _.map([4, 8], square);
+ * // => [16, 64]
+ *
+ * _.map({ 'a': 4, 'b': 8 }, square);
+ * // => [16, 64] (iteration order is not guaranteed)
+ *
+ * var users = [
+ *   { 'user': 'barney' },
+ *   { 'user': 'fred' }
+ * ];
+ *
+ * // The `_.property` iteratee shorthand.
+ * _.map(users, 'user');
+ * // => ['barney', 'fred']
+ */
+function map(collection, iteratee) {
+  var func = isArray(collection) ? arrayMap : baseMap;
+  return func(collection, baseIteratee(iteratee, 3));
+}
+
+module.exports = map;
+
+
+/***/ }),
+
 /***/ "../node_modules/lodash/memoize.js":
 /*!*****************************************!*\
   !*** ../node_modules/lodash/memoize.js ***!
@@ -23124,6 +24441,69 @@ function sortedIndexBy(array, value, iteratee) {
 }
 
 module.exports = sortedIndexBy;
+
+
+/***/ }),
+
+/***/ "../node_modules/lodash/split.js":
+/*!***************************************!*\
+  !*** ../node_modules/lodash/split.js ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var baseToString = __webpack_require__(/*! ./_baseToString */ "../node_modules/lodash/_baseToString.js"),
+    castSlice = __webpack_require__(/*! ./_castSlice */ "../node_modules/lodash/_castSlice.js"),
+    hasUnicode = __webpack_require__(/*! ./_hasUnicode */ "../node_modules/lodash/_hasUnicode.js"),
+    isIterateeCall = __webpack_require__(/*! ./_isIterateeCall */ "../node_modules/lodash/_isIterateeCall.js"),
+    isRegExp = __webpack_require__(/*! ./isRegExp */ "../node_modules/lodash/isRegExp.js"),
+    stringToArray = __webpack_require__(/*! ./_stringToArray */ "../node_modules/lodash/_stringToArray.js"),
+    toString = __webpack_require__(/*! ./toString */ "../node_modules/lodash/toString.js");
+
+/** Used as references for the maximum length and index of an array. */
+var MAX_ARRAY_LENGTH = 4294967295;
+
+/**
+ * Splits `string` by `separator`.
+ *
+ * **Note:** This method is based on
+ * [`String#split`](https://mdn.io/String/split).
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category String
+ * @param {string} [string=''] The string to split.
+ * @param {RegExp|string} separator The separator pattern to split by.
+ * @param {number} [limit] The length to truncate results to.
+ * @returns {Array} Returns the string segments.
+ * @example
+ *
+ * _.split('a-b-c', '-', 2);
+ * // => ['a', 'b']
+ */
+function split(string, separator, limit) {
+  if (limit && typeof limit != 'number' && isIterateeCall(string, separator, limit)) {
+    separator = limit = undefined;
+  }
+  limit = limit === undefined ? MAX_ARRAY_LENGTH : limit >>> 0;
+  if (!limit) {
+    return [];
+  }
+  string = toString(string);
+  if (string && (
+        typeof separator == 'string' ||
+        (separator != null && !isRegExp(separator))
+      )) {
+    separator = baseToString(separator);
+    if (!separator && hasUnicode(string)) {
+      return castSlice(stringToArray(string), 0, limit);
+    }
+  }
+  return string.split(separator, limit);
+}
+
+module.exports = split;
 
 
 /***/ }),
@@ -49856,7 +51236,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
- // import { Input, Button, Modal, Popover, Switch } from 'antd';
 
 
 
@@ -50437,6 +51816,7 @@ function renderTreeNodes(nodes) {
 }
 function index(props) {
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(antd_lib_tree_select__WEBPACK_IMPORTED_MODULE_6___default.a, {
+    multiple: props.multiple,
     loading: props.loading,
     showSearch: true,
     style: {
@@ -50452,7 +51832,8 @@ function index(props) {
     treeNodeFilterProp: "title",
     treeNodeLabelProp: "path",
     value: props.value,
-    onChange: props.onChange
+    onChange: props.onChange,
+    onSearch: props.onSearch
   }, renderTreeNodes(props.treeData));
 }
 
@@ -50473,11 +51854,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _grafana_ui__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @grafana/ui */ "@grafana/ui");
 /* harmony import */ var _grafana_ui__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_grafana_ui__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _grafana_data__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @grafana/data */ "@grafana/data");
+/* harmony import */ var _grafana_data__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_grafana_data__WEBPACK_IMPORTED_MODULE_3__);
+
 
 
 
 var SecretFormField = _grafana_ui__WEBPACK_IMPORTED_MODULE_2__["LegacyForms"].SecretFormField,
-    FormField = _grafana_ui__WEBPACK_IMPORTED_MODULE_2__["LegacyForms"].FormField;
+    FormField = _grafana_ui__WEBPACK_IMPORTED_MODULE_2__["LegacyForms"].FormField,
+    Switch = _grafana_ui__WEBPACK_IMPORTED_MODULE_2__["LegacyForms"].Switch;
 
 var ConfigEditor =
 /** @class */
@@ -50538,25 +51923,36 @@ function (_super) {
     return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
       className: "gf-form-group"
     }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      className: "gf-form-inline"
+    }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      className: "gf-form"
+    }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(Switch, {
+      label: "Enterprise",
+      labelClass: "width-10",
+      checked: jsonData.enterpriseOnly || false,
+      onChange: Object(_grafana_data__WEBPACK_IMPORTED_MODULE_3__["onUpdateDatasourceJsonDataOptionChecked"])(this.props, 'enterpriseOnly')
+    }))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
       className: "gf-form"
     }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(FormField, {
       label: "URL",
       labelWidth: 6,
       inputWidth: 20,
-      onChange: this.onPathChange,
+      tooltip: "nginx address, example: http://example.com",
+      placeholder: "http://example.com",
       value: jsonData.path || '',
-      placeholder: "nginx address"
+      onChange: this.onPathChange
     })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
       className: "gf-form-inline"
     }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
       className: "gf-form"
     }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(SecretFormField, {
-      isConfigured: secureJsonFields && secureJsonFields.apiKey,
-      value: secureJsonData.apiKey || '',
       label: "Token",
-      placeholder: "field tokens in monapi.yml",
       labelWidth: 6,
       inputWidth: 20,
+      tooltip: "field tokens in monapi.yml",
+      placeholder: "field tokens in monapi.yml",
+      isConfigured: secureJsonFields && secureJsonFields.apiKey,
+      value: secureJsonData.apiKey || '',
       onReset: this.onResetAPIKey,
       onChange: this.onAPIKeyChange
     }))));
@@ -50586,16 +51982,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _grafana_data__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_grafana_data__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _grafana_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @grafana/runtime */ "@grafana/runtime");
 /* harmony import */ var _grafana_runtime__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_grafana_runtime__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var antd_lib_message__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! antd/lib/message */ "../node_modules/antd/lib/message/index.js");
-/* harmony import */ var antd_lib_message__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(antd_lib_message__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./types */ "./types.ts");
-/* harmony import */ var _Components_Tagkv_utils__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./Components/Tagkv/utils */ "./Components/Tagkv/utils.ts");
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./utils */ "./utils.ts");
-/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./config */ "./config.ts");
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./types */ "./types.ts");
+/* harmony import */ var _Components_Tagkv_utils__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Components/Tagkv/utils */ "./Components/Tagkv/utils.ts");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./utils */ "./utils.ts");
+/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./config */ "./config.ts");
+/* harmony import */ var _services__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./services */ "./services.ts");
 
 
 
- // import { message } from 'antd';
 
 
 
@@ -50617,33 +52011,10 @@ function (_super) {
     return _this;
   }
 
-  DataSource.prototype._request = function (options) {
-    var id = this.instanceSettings.id;
-    var prefix = "/api/datasources/proxy/" + id;
-    return this.backendSrv.datasourceRequest(Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"])(Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"])({}, options), {
-      url: "" + prefix + options.url
-    })).then(function (res) {
-      if (res.data.err) {
-        antd_lib_message__WEBPACK_IMPORTED_MODULE_4___default.a.warning(res.data.err);
-      }
-
-      return res.data.dat;
-    })["catch"](function (err) {
-      if (lodash__WEBPACK_IMPORTED_MODULE_1___default.a.get(err, 'data.err')) {
-        antd_lib_message__WEBPACK_IMPORTED_MODULE_4___default.a.error(lodash__WEBPACK_IMPORTED_MODULE_1___default.a.get(err, 'data.err'));
-      } else {
-        antd_lib_message__WEBPACK_IMPORTED_MODULE_4___default.a.error(err.statusText);
-      }
-    });
-  };
-
   DataSource.prototype.fetchTreeData = function () {
     var _this = this;
 
-    return this._request({
-      url: '/v1/portal/tree',
-      method: 'GET'
-    }).then(function (res) {
+    return Object(_services__WEBPACK_IMPORTED_MODULE_8__["fetchTreeData"])(this.instanceSettings, this.backendSrv).then(function (res) {
       var treeData = lodash__WEBPACK_IMPORTED_MODULE_1___default.a.map(res, function (item) {
         return {
           text: item.path
@@ -50652,37 +52023,19 @@ function (_super) {
 
       _this.treeData = res;
       return treeData;
-    })["catch"](function (err) {})["finally"](function () {});
+    });
   };
 
   DataSource.prototype.fetchEndpointsData = function (nid) {
-    return this._request({
-      url: "/v1/portal/endpoints/bynodeids?ids=" + nid
-    }).then(function (res) {
-      return lodash__WEBPACK_IMPORTED_MODULE_1___default.a.map(res, 'ident');
-    })["catch"](function (err) {})["finally"](function () {});
+    return Object(_services__WEBPACK_IMPORTED_MODULE_8__["fetchEndpointsData"])(this.instanceSettings, this.backendSrv, nid);
   };
 
   DataSource.prototype.fetchCountersData = function (reqData) {
-    return this._request({
-      url: '/api/index/counter/fullmatch',
-      method: 'POST',
-      data: JSON.stringify(reqData)
-    }).then(function (res) {
-      return res;
-    })["catch"](function (err) {})["finally"](function () {});
+    return Object(_services__WEBPACK_IMPORTED_MODULE_8__["fetchCountersData"])(this.instanceSettings, this.backendSrv, reqData);
   };
 
   DataSource.prototype.fetchSeriesData = function (reqData) {
-    return this._request({
-      url: '/api/transfer/data/ui',
-      method: 'POST',
-      data: JSON.stringify(reqData)
-    }).then(function (res) {
-      return lodash__WEBPACK_IMPORTED_MODULE_1___default.a.filter(res, function (item) {
-        return !lodash__WEBPACK_IMPORTED_MODULE_1___default.a.isEmpty(item.values);
-      });
-    })["catch"](function (err) {})["finally"](function () {});
+    return Object(_services__WEBPACK_IMPORTED_MODULE_8__["fetchSeriesData"])(this.instanceSettings, this.backendSrv, reqData);
   };
 
   DataSource.prototype.query = function (options) {
@@ -50699,44 +52052,64 @@ function (_super) {
             data = [];
 
             _loop_1 = function _loop_1(targetIdx) {
-              var query, selectedNid, selectedMetric, tagkv, aggrFunc, groupKey, comparison, selectedEndpointsIdent, selectedTagkv, endpointsData, dTagvKeyword, replaced, counters, endpointCounters, sourceData, i, sdata, seriesData;
-              return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__generator"])(this, function (_a) {
-                switch (_a.label) {
+              var query, category, selectedNid, selectedMetric, tagkv, aggrFunc, groupKey, comparison, _nids, selectedEndpointsIdent, selectedTagkv, cateKey, cateVal, endpointsData, dTagvKeyword, replaced, counters, endpointCounters, sourceData, i, sdata, seriesData;
+
+              var _a;
+
+              return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__generator"])(this, function (_b) {
+                switch (_b.label) {
                   case 0:
-                    query = lodash__WEBPACK_IMPORTED_MODULE_1___default.a.defaults(options.targets[targetIdx], _types__WEBPACK_IMPORTED_MODULE_5__["defaultQuery"]);
-                    selectedNid = query.selectedNid, selectedMetric = query.selectedMetric, tagkv = query.tagkv, aggrFunc = query.aggrFunc, groupKey = query.groupKey, comparison = query.comparison;
+                    query = lodash__WEBPACK_IMPORTED_MODULE_1___default.a.defaults(options.targets[targetIdx], _types__WEBPACK_IMPORTED_MODULE_4__["defaultQuery"]);
+                    category = query.category, selectedNid = query.selectedNid, selectedMetric = query.selectedMetric, tagkv = query.tagkv, aggrFunc = query.aggrFunc, groupKey = query.groupKey, comparison = query.comparison, _nids = query._nids;
                     selectedEndpointsIdent = query.selectedEndpointsIdent, selectedTagkv = query.selectedTagkv;
-                    if (!Object(_Components_Tagkv_utils__WEBPACK_IMPORTED_MODULE_6__["hasDtag"])(selectedEndpointsIdent)) return [3
+                    cateKey = category === 0 ? 'endpoints' : 'nids';
+                    cateVal = selectedEndpointsIdent;
+                    if (!(category === 0)) return [3
+                    /*break*/
+                    , 4];
+                    if (!Object(_Components_Tagkv_utils__WEBPACK_IMPORTED_MODULE_5__["hasDtag"])(cateVal)) return [3
                     /*break*/
                     , 2];
                     return [4
                     /*yield*/
-                    , this_1.fetchEndpointsData(selectedNid)];
+                    , this_1.fetchEndpointsData(selectedNid[0])];
 
                   case 1:
-                    endpointsData = _a.sent();
-                    dTagvKeyword = Object(_Components_Tagkv_utils__WEBPACK_IMPORTED_MODULE_6__["getDTagvKeyword"])(selectedEndpointsIdent[0]);
-                    selectedEndpointsIdent = Object(_Components_Tagkv_utils__WEBPACK_IMPORTED_MODULE_6__["dFilter"])(dTagvKeyword, selectedEndpointsIdent[0], endpointsData);
+                    endpointsData = _b.sent();
+                    dTagvKeyword = Object(_Components_Tagkv_utils__WEBPACK_IMPORTED_MODULE_5__["getDTagvKeyword"])(cateVal[0]);
+                    cateVal = Object(_Components_Tagkv_utils__WEBPACK_IMPORTED_MODULE_5__["dFilter"])(dTagvKeyword, cateVal[0], endpointsData);
                     return [3
                     /*break*/
                     , 3];
 
                   case 2:
-                    if (Object(_Components_Tagkv_utils__WEBPACK_IMPORTED_MODULE_6__["hasVariable"])(selectedEndpointsIdent)) {
-                      replaced = templateSrv.replace(selectedEndpointsIdent[0], undefined, function (result) {
+                    if (Object(_Components_Tagkv_utils__WEBPACK_IMPORTED_MODULE_5__["hasVariable"])(cateVal)) {
+                      replaced = templateSrv.replace(cateVal[0], undefined, function (result) {
                         return result;
                       });
-                      selectedEndpointsIdent = lodash__WEBPACK_IMPORTED_MODULE_1___default.a.split(replaced, ',');
+                      cateVal = lodash__WEBPACK_IMPORTED_MODULE_1___default.a.split(replaced, ',');
                     }
 
-                    _a.label = 3;
+                    _b.label = 3;
 
                   case 3:
-                    if (Object(_Components_Tagkv_utils__WEBPACK_IMPORTED_MODULE_6__["hasDtag"])(selectedTagkv)) {
+                    return [3
+                    /*break*/
+                    , 5];
+
+                  case 4:
+                    if (category === 1) {
+                      cateVal = _nids;
+                    }
+
+                    _b.label = 5;
+
+                  case 5:
+                    if (Object(_Components_Tagkv_utils__WEBPACK_IMPORTED_MODULE_5__["hasDtag"])(selectedTagkv)) {
                       selectedTagkv = lodash__WEBPACK_IMPORTED_MODULE_1___default.a.map(selectedTagkv, function (item) {
                         return {
                           tagk: item.tagk,
-                          tagv: Object(_Components_Tagkv_utils__WEBPACK_IMPORTED_MODULE_6__["getDTagV"])(tagkv, item)
+                          tagv: Object(_Components_Tagkv_utils__WEBPACK_IMPORTED_MODULE_5__["getDTagV"])(tagkv, item)
                         };
                       });
                     }
@@ -50749,15 +52122,11 @@ function (_super) {
 
                     return [4
                     /*yield*/
-                    , this_1.fetchCountersData([{
-                      endpoints: selectedEndpointsIdent,
-                      metric: selectedMetric,
-                      tagkv: selectedTagkv
-                    }])];
+                    , this_1.fetchCountersData([(_a = {}, _a[cateKey] = cateVal, _a.metric = selectedMetric, _a.tagkv = selectedTagkv, _a)])];
 
-                  case 4:
-                    counters = _a.sent();
-                    endpointCounters = Object(_utils__WEBPACK_IMPORTED_MODULE_7__["normalizeEndpointCounters"])({
+                  case 6:
+                    counters = _b.sent();
+                    endpointCounters = Object(_utils__WEBPACK_IMPORTED_MODULE_6__["normalizeEndpointCounters"])({
                       start: from,
                       end: to,
                       aggrFunc: aggrFunc,
@@ -50766,28 +52135,28 @@ function (_super) {
                     }, counters);
                     sourceData = [];
                     i = 0;
-                    _a.label = 5;
+                    _b.label = 7;
 
-                  case 5:
+                  case 7:
                     if (!(i < endpointCounters.length)) return [3
                     /*break*/
-                    , 8];
+                    , 10];
                     return [4
                     /*yield*/
                     , this_1.fetchSeriesData(endpointCounters[i])];
 
-                  case 6:
-                    sdata = _a.sent();
+                  case 8:
+                    sdata = _b.sent();
                     sourceData = lodash__WEBPACK_IMPORTED_MODULE_1___default.a.concat(sourceData, sdata);
-                    _a.label = 7;
+                    _b.label = 9;
 
-                  case 7:
+                  case 9:
                     i++;
                     return [3
                     /*break*/
-                    , 5];
+                    , 7];
 
-                  case 8:
+                  case 10:
                     seriesData = lodash__WEBPACK_IMPORTED_MODULE_1___default.a.map(sourceData, function (item) {
                       var timeValues = [];
                       var valueValues = [];
@@ -50800,7 +52169,7 @@ function (_super) {
                       var serieName = (item.endpoint ? item.endpoint : selectedMetric) + " " + item.counter;
 
                       if (lodash__WEBPACK_IMPORTED_MODULE_1___default.a.isArray(comparison) && comparison.length > 0 && item.comparison) {
-                        serieName += " (" + lodash__WEBPACK_IMPORTED_MODULE_1___default.a.get(lodash__WEBPACK_IMPORTED_MODULE_1___default.a.find(_config__WEBPACK_IMPORTED_MODULE_8__["comparisonOptions"], {
+                        serieName += " (" + lodash__WEBPACK_IMPORTED_MODULE_1___default.a.get(lodash__WEBPACK_IMPORTED_MODULE_1___default.a.find(_config__WEBPACK_IMPORTED_MODULE_7__["comparisonOptions"], {
                           value: String(Number(item.comparison) * 1000)
                         }), 'labelEn') + " ago)";
                       }
@@ -50899,11 +52268,13 @@ function (_super) {
 
   DataSource.prototype.testDatasource = function () {
     return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function () {
+      var enterpriseOnly;
       return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__generator"])(this, function (_a) {
+        enterpriseOnly = this.instanceSettings.jsonData.enterpriseOnly;
         return [2
         /*return*/
-        , this._request({
-          url: '/v1/portal/tree',
+        , Object(_services__WEBPACK_IMPORTED_MODULE_8__["request"])(this.instanceSettings, this.backendSrv, {
+          url: enterpriseOnly ? '/api/hsp/tree' : '/v1/portal/tree',
           method: 'GET'
         }).then(function (res) {
           if (res.status === 200) {
@@ -50960,24 +52331,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var antd_lib_input__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(antd_lib_input__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var antd_lib_select__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! antd/lib/select */ "../node_modules/antd/lib/select/index.js");
 /* harmony import */ var antd_lib_select__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(antd_lib_select__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var antd_lib_message__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! antd/lib/message */ "../node_modules/antd/lib/message/index.js");
-/* harmony import */ var antd_lib_message__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(antd_lib_message__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var antd_lib_radio__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! antd/lib/radio */ "../node_modules/antd/lib/radio/index.js");
+/* harmony import */ var antd_lib_radio__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(antd_lib_radio__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var _grafana_ui__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @grafana/ui */ "@grafana/ui");
 /* harmony import */ var _grafana_ui__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_grafana_ui__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var _grafana_runtime__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @grafana/runtime */ "@grafana/runtime");
-/* harmony import */ var _grafana_runtime__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_grafana_runtime__WEBPACK_IMPORTED_MODULE_7__);
-/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./types */ "./types.ts");
-/* harmony import */ var _Components_TreeSelect__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./Components/TreeSelect */ "./Components/TreeSelect/index.tsx");
-/* harmony import */ var _Components_Tagkv__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./Components/Tagkv */ "./Components/Tagkv/index.tsx");
-/* harmony import */ var _Components_Tagkv_utils__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./Components/Tagkv/utils */ "./Components/Tagkv/utils.ts");
-/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./config */ "./config.ts");
-/* harmony import */ var _less_style_less__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./less/style.less */ "./less/style.less");
-/* harmony import */ var _less_style_less__WEBPACK_IMPORTED_MODULE_13___default = /*#__PURE__*/__webpack_require__.n(_less_style_less__WEBPACK_IMPORTED_MODULE_13__);
-/* harmony import */ var _less_antd_dark_less__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./less/antd.dark.less */ "./less/antd.dark.less");
-/* harmony import */ var _less_antd_dark_less__WEBPACK_IMPORTED_MODULE_14___default = /*#__PURE__*/__webpack_require__.n(_less_antd_dark_less__WEBPACK_IMPORTED_MODULE_14__);
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./types */ "./types.ts");
+/* harmony import */ var _Components_TreeSelect__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./Components/TreeSelect */ "./Components/TreeSelect/index.tsx");
+/* harmony import */ var _Components_Tagkv__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./Components/Tagkv */ "./Components/Tagkv/index.tsx");
+/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./config */ "./config.ts");
+/* harmony import */ var _services__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./services */ "./services.ts");
+/* harmony import */ var _less_style_less__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./less/style.less */ "./less/style.less");
+/* harmony import */ var _less_style_less__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(_less_style_less__WEBPACK_IMPORTED_MODULE_12__);
+/* harmony import */ var _less_antd_dark_less__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./less/antd.dark.less */ "./less/antd.dark.less");
+/* harmony import */ var _less_antd_dark_less__WEBPACK_IMPORTED_MODULE_13___default = /*#__PURE__*/__webpack_require__.n(_less_antd_dark_less__WEBPACK_IMPORTED_MODULE_13__);
 
-
- // import { Input, Select, message } from 'antd';
 
 
 
@@ -51014,40 +52381,18 @@ function (_super) {
     return _this;
   }
 
-  QueryEditor.prototype._request = function (options) {
-    var _a = this.props.datasource,
-        instanceSettings = _a.instanceSettings,
-        backendSrv = _a.backendSrv;
-    var prefix = "/api/datasources/proxy/" + instanceSettings.id;
-    return backendSrv.datasourceRequest(Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"])(Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"])({}, options), {
-      url: "" + prefix + options.url
-    })).then(function (res) {
-      if (res.data.err) {
-        antd_lib_message__WEBPACK_IMPORTED_MODULE_5___default.a.warning(res.data.err);
-      }
-
-      return res.data.dat;
-    })["catch"](function (err) {
-      if (lodash__WEBPACK_IMPORTED_MODULE_1___default.a.get(err, 'data.err')) {
-        antd_lib_message__WEBPACK_IMPORTED_MODULE_5___default.a.error(lodash__WEBPACK_IMPORTED_MODULE_1___default.a.get(err, 'data.err'));
-      } else {
-        antd_lib_message__WEBPACK_IMPORTED_MODULE_5___default.a.error(err.statusText);
-      }
-    });
-  };
-
   QueryEditor.prototype.componentDidMount = function () {
     this.fetchData();
   };
 
   QueryEditor.prototype.fetchData = function () {
     return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function () {
-      var query, selectedNid, selectedEndpointsIdent, selectedMetric, e_1;
+      var query, selectedNid, selectedEndpointsIdent, selectedMetric, category, e_1;
       return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__generator"])(this, function (_a) {
         switch (_a.label) {
           case 0:
-            query = lodash__WEBPACK_IMPORTED_MODULE_1___default.a.defaults(this.props.query, _types__WEBPACK_IMPORTED_MODULE_8__["defaultQuery"]);
-            selectedNid = query.selectedNid, selectedEndpointsIdent = query.selectedEndpointsIdent, selectedMetric = query.selectedMetric;
+            query = lodash__WEBPACK_IMPORTED_MODULE_1___default.a.defaults(this.props.query, _types__WEBPACK_IMPORTED_MODULE_7__["defaultQuery"]);
+            selectedNid = query.selectedNid, selectedEndpointsIdent = query.selectedEndpointsIdent, selectedMetric = query.selectedMetric, category = query.category;
             _a.label = 1;
 
           case 1:
@@ -51065,7 +52410,7 @@ function (_super) {
             , 4];
             return [4
             /*yield*/
-            , this.fetchEndpointsData(selectedNid)];
+            , this.fetchEndpointsData(selectedNid[0])];
 
           case 3:
             _a.sent();
@@ -51078,7 +52423,7 @@ function (_super) {
             , 6];
             return [4
             /*yield*/
-            , this.fetchMetricsData(selectedEndpointsIdent)];
+            , this.fetchMetricsData(selectedEndpointsIdent, category)];
 
           case 5:
             _a.sent();
@@ -51091,7 +52436,7 @@ function (_super) {
             , 8];
             return [4
             /*yield*/
-            , this.fetchTagkvData([selectedMetric], true)];
+            , this.fetchTagkvData([selectedMetric], category, true)];
 
           case 7:
             _a.sent();
@@ -51122,17 +52467,17 @@ function (_super) {
   QueryEditor.prototype.fetchTreeData = function () {
     var _this = this;
 
+    var _a = this.props.datasource,
+        instanceSettings = _a.instanceSettings,
+        backendSrv = _a.backendSrv;
     this.setState({
       treeDataLoading: true
     });
-    return this._request({
-      url: '/v1/portal/tree',
-      method: 'GET'
-    }).then(function (res) {
+    Object(_services__WEBPACK_IMPORTED_MODULE_11__["fetchTreeData"])(instanceSettings, backendSrv).then(function (res) {
       _this.setState({
-        treeData: Object(_Components_TreeSelect__WEBPACK_IMPORTED_MODULE_9__["normalizeTreeData"])(res)
+        treeData: Object(_Components_TreeSelect__WEBPACK_IMPORTED_MODULE_8__["normalizeTreeData"])(res)
       });
-    })["catch"](function (err) {})["finally"](function () {
+    })["finally"](function () {
       _this.setState({
         treeDataLoading: false
       });
@@ -51142,102 +52487,63 @@ function (_super) {
   QueryEditor.prototype.fetchEndpointsData = function (nid) {
     var _this = this;
 
+    var _a = this.props.datasource,
+        instanceSettings = _a.instanceSettings,
+        backendSrv = _a.backendSrv;
     this.setState({
       endpointsDataLoading: true
     });
-    return this._request({
-      url: "/v1/portal/endpoints/bynodeids?ids=" + nid,
-      method: 'GET'
-    }).then(function (res) {
-      var endpointsData = lodash__WEBPACK_IMPORTED_MODULE_1___default.a.map(res, 'ident');
-
+    return Object(_services__WEBPACK_IMPORTED_MODULE_11__["fetchEndpointsData"])(instanceSettings, backendSrv, nid).then(function (res) {
       _this.setState({
-        endpointsData: endpointsData
+        endpointsData: res
       });
 
-      _this.fetchMetricsData(endpointsData);
-    })["catch"](function (err) {})["finally"](function () {
+      _this.fetchMetricsData(res, 0);
+    })["finally"](function () {
       _this.setState({
         endpointsDataLoading: false
       });
     });
   };
 
-  QueryEditor.prototype.fetchMetricsData = function (endpointsIdent) {
+  QueryEditor.prototype.fetchMetricsData = function (endpointsIdent, category) {
     var _this = this;
 
-    var templateSrv = Object(_grafana_runtime__WEBPACK_IMPORTED_MODULE_7__["getTemplateSrv"])();
+    var _a = this.props.datasource,
+        instanceSettings = _a.instanceSettings,
+        backendSrv = _a.backendSrv;
     var endpointsData = this.state.endpointsData;
-    var selectedEndpointsIdent = endpointsIdent;
     this.setState({
       metricsDataLoading: true
     });
-
-    if (Object(_Components_Tagkv_utils__WEBPACK_IMPORTED_MODULE_11__["hasDtag"])(selectedEndpointsIdent)) {
-      var dTagvKeyword = Object(_Components_Tagkv_utils__WEBPACK_IMPORTED_MODULE_11__["getDTagvKeyword"])(selectedEndpointsIdent[0]);
-      selectedEndpointsIdent = Object(_Components_Tagkv_utils__WEBPACK_IMPORTED_MODULE_11__["dFilter"])(dTagvKeyword, selectedEndpointsIdent[0], endpointsData);
-    } else if (Object(_Components_Tagkv_utils__WEBPACK_IMPORTED_MODULE_11__["hasVariable"])(selectedEndpointsIdent)) {
-      var replaced = templateSrv.replace(selectedEndpointsIdent[0], undefined, function (result) {
-        return result;
-      });
-      selectedEndpointsIdent = lodash__WEBPACK_IMPORTED_MODULE_1___default.a.split(replaced, ',');
-    }
-
-    return this._request({
-      url: '/api/index/metrics',
-      method: 'POST',
-      data: JSON.stringify({
-        endpoints: selectedEndpointsIdent
-      })
-    }).then(function (res) {
+    return Object(_services__WEBPACK_IMPORTED_MODULE_11__["fetchMetricsData"])(instanceSettings, backendSrv, endpointsIdent, endpointsData, category).then(function (res) {
       _this.setState({
-        metricsData: res.metrics
+        metricsData: res
       });
-    })["catch"](function (err) {})["finally"](function () {
+    })["finally"](function () {
       _this.setState({
         metricsDataLoading: false
       });
     });
   };
 
-  QueryEditor.prototype.fetchTagkvData = function (metrics, isFirstLoad) {
+  QueryEditor.prototype.fetchTagkvData = function (metrics, category, isFirstLoad) {
     var _this = this;
 
     if (isFirstLoad === void 0) {
       isFirstLoad = false;
     }
 
-    var templateSrv = Object(_grafana_runtime__WEBPACK_IMPORTED_MODULE_7__["getTemplateSrv"])();
+    var _a = this.props.datasource,
+        instanceSettings = _a.instanceSettings,
+        backendSrv = _a.backendSrv;
 
-    var query = lodash__WEBPACK_IMPORTED_MODULE_1___default.a.defaults(this.props.query, _types__WEBPACK_IMPORTED_MODULE_8__["defaultQuery"]);
+    var query = lodash__WEBPACK_IMPORTED_MODULE_1___default.a.defaults(this.props.query, _types__WEBPACK_IMPORTED_MODULE_7__["defaultQuery"]);
 
-    var selectedEndpointsIdent = query.selectedEndpointsIdent,
-        selectedTagkv = query.selectedTagkv;
+    var selectedTagkv = query.selectedTagkv;
     var endpointsData = this.state.endpointsData;
-    this.setState({
-      tagkvDataLoading: true
-    });
-
-    if (Object(_Components_Tagkv_utils__WEBPACK_IMPORTED_MODULE_11__["hasDtag"])(selectedEndpointsIdent)) {
-      var dTagvKeyword = Object(_Components_Tagkv_utils__WEBPACK_IMPORTED_MODULE_11__["getDTagvKeyword"])(selectedEndpointsIdent[0]);
-      selectedEndpointsIdent = Object(_Components_Tagkv_utils__WEBPACK_IMPORTED_MODULE_11__["dFilter"])(dTagvKeyword, selectedEndpointsIdent[0], endpointsData);
-    } else if (Object(_Components_Tagkv_utils__WEBPACK_IMPORTED_MODULE_11__["hasVariable"])(selectedEndpointsIdent)) {
-      var replaced = templateSrv.replace(selectedEndpointsIdent[0], undefined, function (result) {
-        return result;
-      });
-      selectedEndpointsIdent = lodash__WEBPACK_IMPORTED_MODULE_1___default.a.split(replaced, ',');
-    }
-
-    return this._request({
-      url: '/api/index/tagkv',
-      method: 'POST',
-      data: JSON.stringify({
-        endpoints: selectedEndpointsIdent,
-        metrics: metrics
-      })
-    }).then(function (res) {
-      var tagkvData = lodash__WEBPACK_IMPORTED_MODULE_1___default.a.get(res, '[0].tagkv'); // TODO: single metric
-
+    return Object(_services__WEBPACK_IMPORTED_MODULE_11__["fetchTagkvData"])(instanceSettings, backendSrv, query, metrics, endpointsData, category).then(function (res) {
+      var tagkvData = lodash__WEBPACK_IMPORTED_MODULE_1___default.a.get(res, 'tagkv');
 
       _this.setState({
         tagkvData: tagkvData
@@ -51246,7 +52552,7 @@ function (_super) {
       var _a = _this.props,
           onChange = _a.onChange,
           query = _a.query,
-          onRunQuery = _a.onRunQuery;
+          onRunQuery = _a.onRunQuery; // TODO: 逻辑不清
 
       var newSelectedTagkv = lodash__WEBPACK_IMPORTED_MODULE_1___default.a.map(tagkvData, function (item) {
         return {
@@ -51261,10 +52567,13 @@ function (_super) {
 
       onChange(Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"])(Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"])({}, query), {
         selectedTagkv: newSelectedTagkv,
-        tagkv: tagkvData
+        tagkv: tagkvData,
+        _nids: lodash__WEBPACK_IMPORTED_MODULE_1___default.a.map(res.nids, function (item) {
+          return String(item);
+        })
       }));
       onRunQuery();
-    })["catch"](function (err) {})["finally"](function () {
+    })["finally"](function () {
       _this.setState({
         tagkvDataLoading: false
       });
@@ -51274,9 +52583,13 @@ function (_super) {
   QueryEditor.prototype.render = function () {
     var _this = this;
 
-    var query = lodash__WEBPACK_IMPORTED_MODULE_1___default.a.defaults(this.props.query, _types__WEBPACK_IMPORTED_MODULE_8__["defaultQuery"]);
+    var instanceSettings = this.props.datasource.instanceSettings;
+    var enterpriseOnly = instanceSettings.jsonData.enterpriseOnly;
 
-    var selectedNid = query.selectedNid,
+    var query = lodash__WEBPACK_IMPORTED_MODULE_1___default.a.defaults(this.props.query, _types__WEBPACK_IMPORTED_MODULE_7__["defaultQuery"]);
+
+    var category = query.category,
+        selectedNid = query.selectedNid,
         selectedEndpointsIdent = query.selectedEndpointsIdent,
         selectedMetric = query.selectedMetric,
         selectedTagkv = query.selectedTagkv,
@@ -51292,24 +52605,63 @@ function (_super) {
         tagkvData = _a.tagkvData;
     return react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("div", {
       className: "n9e-query-editor"
-    }, react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("div", {
+    }, enterpriseOnly ? react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("div", {
       className: "gf-form"
-    }, react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(FormField // tooltip="" // 定义一些提示
-    , {
-      // tooltip="" // 定义一些提示
+    }, react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(FormField, {
       className: "n9e-form-field-control-fullWidth",
       labelWidth: 8,
-      label: "Node path",
-      inputEl: react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(_Components_TreeSelect__WEBPACK_IMPORTED_MODULE_9__["default"], {
+      label: "type",
+      inputEl: react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(antd_lib_radio__WEBPACK_IMPORTED_MODULE_5___default.a.Group, {
+        style: {
+          marginTop: 5
+        },
+        value: category,
+        onChange: function onChange(e) {
+          var _a = _this.props,
+              onChange = _a.onChange,
+              query = _a.query;
+          var value = e.target.value;
+          onChange(Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"])(Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"])({}, query), {
+            category: value,
+            selectedEndpointsIdent: [],
+            selectedMetric: '',
+            selectedTagkv: []
+          }));
+
+          _this.setState({
+            metricsData: [],
+            tagkvData: []
+          });
+
+          if (value === 0) {
+            _this.fetchEndpointsData(selectedNid[0]);
+          } else if (value === 1) {
+            _this.fetchMetricsData(selectedNid, 1);
+          }
+        }
+      }, react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(antd_lib_radio__WEBPACK_IMPORTED_MODULE_5___default.a, {
+        value: 0
+      }, "Hosts"), react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(antd_lib_radio__WEBPACK_IMPORTED_MODULE_5___default.a, {
+        value: 1
+      }, "No-Hosts"))
+    })) : null, react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("div", {
+      className: "gf-form"
+    }, react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(FormField, {
+      className: "n9e-form-field-control-fullWidth",
+      labelWidth: 8,
+      label: "node path",
+      inputEl: react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(_Components_TreeSelect__WEBPACK_IMPORTED_MODULE_8__["default"], {
         treeData: treeData,
         loading: treeDataLoading,
-        value: selectedNid,
+        multiple: category === 1,
+        value: category === 0 && selectedNid !== undefined ? selectedNid[0] : selectedNid,
         onChange: function onChange(val) {
           var _a = _this.props,
               onChange = _a.onChange,
               query = _a.query;
+          var newSelectedNid = category === 0 ? [val] : val;
           onChange(Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"])(Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"])({}, query), {
-            selectedNid: val,
+            selectedNid: newSelectedNid,
             selectedEndpointsIdent: ['=all'],
             selectedMetric: '',
             selectedTagkv: []
@@ -51320,12 +52672,16 @@ function (_super) {
             tagkvData: []
           });
 
-          _this.fetchEndpointsData(val);
+          if (category === 0) {
+            _this.fetchEndpointsData(val);
+          } else if (category === 1) {
+            _this.fetchMetricsData(val, 1);
+          }
         }
       })
-    })), react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("div", {
+    })), category === 0 ? react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("div", {
       className: "gf-form"
-    }, react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(_Components_Tagkv__WEBPACK_IMPORTED_MODULE_10__["default"], {
+    }, react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(_Components_Tagkv__WEBPACK_IMPORTED_MODULE_9__["default"], {
       type: "popover",
       data: [{
         tagk: 'endpoint',
@@ -51351,7 +52707,7 @@ function (_super) {
             tagkvData: []
           });
 
-          _this.fetchMetricsData(tagv);
+          _this.fetchMetricsData(tagv, 0);
         }
       },
       renderItem: function renderItem(tagk, tagv, selectedTagv, show) {
@@ -51373,12 +52729,12 @@ function (_super) {
           inputEl: content
         });
       }
-    })), react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("div", {
+    })) : null, react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("div", {
       className: "gf-form"
     }, react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(FormField, {
       className: "n9e-form-field-control-fullWidth",
       labelWidth: 8,
-      label: "Metrics",
+      label: "metric",
       inputEl: react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(antd_lib_select__WEBPACK_IMPORTED_MODULE_4___default.a, {
         showSearch: true,
         style: {
@@ -51394,7 +52750,7 @@ function (_super) {
             selectedMetric: val
           }));
 
-          _this.fetchTagkvData([val]);
+          _this.fetchTagkvData([val], category);
         }
       }, lodash__WEBPACK_IMPORTED_MODULE_1___default.a.map(metricsData, function (item) {
         return react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(antd_lib_select__WEBPACK_IMPORTED_MODULE_4___default.a.Option, {
@@ -51409,7 +52765,7 @@ function (_super) {
 
       return react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("div", {
         className: "gf-form"
-      }, react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(_Components_Tagkv__WEBPACK_IMPORTED_MODULE_10__["default"], {
+      }, react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(_Components_Tagkv__WEBPACK_IMPORTED_MODULE_9__["default"], {
         type: "popover",
         data: [{
           tagk: item.tagk,
@@ -51473,7 +52829,7 @@ function (_super) {
       className: "gf-form"
     }, react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(FormField, {
       labelWidth: 8,
-      label: "Aggr",
+      label: "aggr",
       inputEl: react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(antd_lib_select__WEBPACK_IMPORTED_MODULE_4___default.a, {
         showSearch: true,
         allowClear: true,
@@ -51492,7 +52848,7 @@ function (_super) {
           }));
           onRunQuery();
         }
-      }, lodash__WEBPACK_IMPORTED_MODULE_1___default.a.map(_config__WEBPACK_IMPORTED_MODULE_12__["aggrOptions"], function (item) {
+      }, lodash__WEBPACK_IMPORTED_MODULE_1___default.a.map(_config__WEBPACK_IMPORTED_MODULE_10__["aggrOptions"], function (item) {
         return react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(antd_lib_select__WEBPACK_IMPORTED_MODULE_4___default.a.Option, {
           key: item.value,
           value: item.value
@@ -51500,7 +52856,7 @@ function (_super) {
       }))
     }), aggrFunc ? react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(FormField, {
       labelWidth: 8,
-      label: "GroupBy",
+      label: "groupBy",
       inputEl: react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(antd_lib_select__WEBPACK_IMPORTED_MODULE_4___default.a, {
         showSearch: true,
         allowClear: true,
@@ -51529,7 +52885,7 @@ function (_super) {
       }))
     }) : null, react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(FormField, {
       labelWidth: 8,
-      label: "Comparison",
+      label: "comparison",
       inputEl: react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(antd_lib_select__WEBPACK_IMPORTED_MODULE_4___default.a, {
         showSearch: true,
         allowClear: true,
@@ -51548,7 +52904,7 @@ function (_super) {
           }));
           onRunQuery();
         }
-      }, lodash__WEBPACK_IMPORTED_MODULE_1___default.a.map(_config__WEBPACK_IMPORTED_MODULE_12__["comparisonOptions"], function (item) {
+      }, lodash__WEBPACK_IMPORTED_MODULE_1___default.a.map(_config__WEBPACK_IMPORTED_MODULE_10__["comparisonOptions"], function (item) {
         return react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(antd_lib_select__WEBPACK_IMPORTED_MODULE_4___default.a.Option, {
           key: item.value,
           value: item.value
@@ -51703,6 +53059,233 @@ var plugin = new _grafana_data__WEBPACK_IMPORTED_MODULE_0__["DataSourcePlugin"](
 
 /***/ }),
 
+/***/ "./services.ts":
+/*!*********************!*\
+  !*** ./services.ts ***!
+  \*********************/
+/*! exports provided: request, fetchHabits, fetchTreeData, fetchEndpointsData, fetchMetricsData, fetchTagkvData, fetchCountersData, fetchSeriesData */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "request", function() { return request; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchHabits", function() { return fetchHabits; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchTreeData", function() { return fetchTreeData; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchEndpointsData", function() { return fetchEndpointsData; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchMetricsData", function() { return fetchMetricsData; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchTagkvData", function() { return fetchTagkvData; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchCountersData", function() { return fetchCountersData; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchSeriesData", function() { return fetchSeriesData; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "../node_modules/tslib/tslib.es6.js");
+/* harmony import */ var lodash_get__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lodash/get */ "../node_modules/lodash/get.js");
+/* harmony import */ var lodash_get__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(lodash_get__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var lodash_map__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! lodash/map */ "../node_modules/lodash/map.js");
+/* harmony import */ var lodash_map__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(lodash_map__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var lodash_split__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! lodash/split */ "../node_modules/lodash/split.js");
+/* harmony import */ var lodash_split__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(lodash_split__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var lodash_filter__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! lodash/filter */ "../node_modules/lodash/filter.js");
+/* harmony import */ var lodash_filter__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(lodash_filter__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var lodash_isEmpty__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! lodash/isEmpty */ "../node_modules/lodash/isEmpty.js");
+/* harmony import */ var lodash_isEmpty__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(lodash_isEmpty__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var antd_lib_message__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! antd/lib/message */ "../node_modules/antd/lib/message/index.js");
+/* harmony import */ var antd_lib_message__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(antd_lib_message__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _grafana_runtime__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @grafana/runtime */ "@grafana/runtime");
+/* harmony import */ var _grafana_runtime__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_grafana_runtime__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _Components_Tagkv_utils__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./Components/Tagkv/utils */ "./Components/Tagkv/utils.ts");
+
+
+
+
+
+
+
+
+
+function request(instanceSettings, backendSrv, options) {
+  var prefix = "/api/datasources/proxy/" + instanceSettings.id;
+  return backendSrv.datasourceRequest(Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"])(Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"])({}, options), {
+    url: "" + prefix + options.url
+  })).then(function (res) {
+    if (res.data.err) {
+      antd_lib_message__WEBPACK_IMPORTED_MODULE_6___default.a.warning(res.data.err);
+    }
+
+    return res.data.dat;
+  })["catch"](function (err) {
+    if (lodash_get__WEBPACK_IMPORTED_MODULE_1___default()(err, 'data.err')) {
+      antd_lib_message__WEBPACK_IMPORTED_MODULE_6___default.a.error(lodash_get__WEBPACK_IMPORTED_MODULE_1___default()(err, 'data.err'));
+    } else {
+      antd_lib_message__WEBPACK_IMPORTED_MODULE_6___default.a.error(err.statusText);
+    }
+  });
+}
+function fetchHabits(instanceSettings, backendSrv) {
+  return request(instanceSettings, backendSrv, {
+    url: '/api/uic/habits/identity',
+    method: 'GET'
+  });
+}
+function fetchTreeData(instanceSettings, backendSrv) {
+  var enterpriseOnly = instanceSettings.jsonData.enterpriseOnly;
+  return request(instanceSettings, backendSrv, {
+    url: enterpriseOnly ? '/api/hsp/tree' : '/v1/portal/tree',
+    method: 'GET'
+  });
+}
+function fetchEndpointsData(instanceSettings, backendSrv, nid) {
+  return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function () {
+    var enterpriseOnly, endpoints, res, habitsId, err_1;
+    return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__generator"])(this, function (_a) {
+      switch (_a.label) {
+        case 0:
+          enterpriseOnly = instanceSettings.jsonData.enterpriseOnly;
+          endpoints = [];
+          _a.label = 1;
+
+        case 1:
+          _a.trys.push([1, 6,, 7]);
+
+          return [4
+          /*yield*/
+          , request(instanceSettings, backendSrv, {
+            url: enterpriseOnly ? "/api/hsp/node/obj/" + nid + "/host?limit=5000" : "/v1/portal/endpoints/bynodeids?ids=" + nid,
+            method: 'GET'
+          })];
+
+        case 2:
+          res = _a.sent();
+          if (!enterpriseOnly) return [3
+          /*break*/
+          , 4];
+          return [4
+          /*yield*/
+          , fetchHabits(instanceSettings, backendSrv)];
+
+        case 3:
+          habitsId = _a.sent();
+          endpoints = lodash_map__WEBPACK_IMPORTED_MODULE_2___default()(res.list, habitsId);
+          return [3
+          /*break*/
+          , 5];
+
+        case 4:
+          endpoints = lodash_map__WEBPACK_IMPORTED_MODULE_2___default()(res, 'ident');
+          _a.label = 5;
+
+        case 5:
+          return [3
+          /*break*/
+          , 7];
+
+        case 6:
+          err_1 = _a.sent();
+          console.log(err_1);
+          return [3
+          /*break*/
+          , 7];
+
+        case 7:
+          return [2
+          /*return*/
+          , endpoints];
+      }
+    });
+  });
+}
+function fetchMetricsData(instanceSettings, backendSrv, endpointsIdent, endpointsData, category) {
+  var _a;
+
+  var templateSrv = Object(_grafana_runtime__WEBPACK_IMPORTED_MODULE_7__["getTemplateSrv"])();
+  var selectedEndpointsIdent = endpointsIdent;
+  var endpointsKey = category === 0 ? 'endpoints' : 'nids';
+
+  if (endpointsKey === 'endpoints') {
+    if (Object(_Components_Tagkv_utils__WEBPACK_IMPORTED_MODULE_8__["hasDtag"])(selectedEndpointsIdent)) {
+      var dTagvKeyword = Object(_Components_Tagkv_utils__WEBPACK_IMPORTED_MODULE_8__["getDTagvKeyword"])(selectedEndpointsIdent[0]);
+      selectedEndpointsIdent = Object(_Components_Tagkv_utils__WEBPACK_IMPORTED_MODULE_8__["dFilter"])(dTagvKeyword, selectedEndpointsIdent[0], endpointsData);
+    } else if (Object(_Components_Tagkv_utils__WEBPACK_IMPORTED_MODULE_8__["hasVariable"])(selectedEndpointsIdent)) {
+      var replaced = templateSrv.replace(selectedEndpointsIdent[0], undefined, function (result) {
+        return result;
+      });
+      selectedEndpointsIdent = lodash_split__WEBPACK_IMPORTED_MODULE_3___default()(replaced, ',');
+    }
+  }
+
+  return request(instanceSettings, backendSrv, {
+    url: endpointsKey === 'endpoints' ? '/api/index/metrics' : '/api/mon/index/metrics',
+    method: 'POST',
+    data: JSON.stringify((_a = {}, _a[endpointsKey] = lodash_map__WEBPACK_IMPORTED_MODULE_2___default()(selectedEndpointsIdent, function (item) {
+      return String(item);
+    }), _a))
+  }).then(function (res) {
+    return res.metrics;
+  });
+}
+function fetchTagkvData(instanceSettings, backendSrv, query, metrics, endpointsData, category) {
+  var _a;
+
+  if (category === void 0) {
+    category = 0 | 1;
+  }
+
+  var templateSrv = Object(_grafana_runtime__WEBPACK_IMPORTED_MODULE_7__["getTemplateSrv"])();
+  var selectedEndpointsIdent = query.selectedEndpointsIdent,
+      selectedNid = query.selectedNid;
+  var endpointsKey = category === 0 ? 'endpoints' : 'nids';
+
+  if (endpointsKey === 'endpoints') {
+    if (Object(_Components_Tagkv_utils__WEBPACK_IMPORTED_MODULE_8__["hasDtag"])(selectedEndpointsIdent)) {
+      var dTagvKeyword = Object(_Components_Tagkv_utils__WEBPACK_IMPORTED_MODULE_8__["getDTagvKeyword"])(selectedEndpointsIdent[0]);
+      selectedEndpointsIdent = Object(_Components_Tagkv_utils__WEBPACK_IMPORTED_MODULE_8__["dFilter"])(dTagvKeyword, selectedEndpointsIdent[0], endpointsData);
+    } else if (Object(_Components_Tagkv_utils__WEBPACK_IMPORTED_MODULE_8__["hasVariable"])(selectedEndpointsIdent)) {
+      var replaced = templateSrv.replace(selectedEndpointsIdent[0], undefined, function (result) {
+        return result;
+      });
+      selectedEndpointsIdent = lodash_split__WEBPACK_IMPORTED_MODULE_3___default()(replaced, ',');
+    }
+  } else if (endpointsKey === 'nids') {
+    selectedEndpointsIdent = lodash_map__WEBPACK_IMPORTED_MODULE_2___default()(selectedNid, function (item) {
+      return String(item);
+    });
+  }
+
+  return request(instanceSettings, backendSrv, {
+    url: endpointsKey === 'endpoints' ? '/api/index/tagkv' : '/api/mon/index/tagkv',
+    method: 'POST',
+    data: JSON.stringify((_a = {}, _a[endpointsKey] = selectedEndpointsIdent, _a.metrics = metrics, _a))
+  }).then(function (res) {
+    // TODO: only single metric now.
+    return res[0];
+  });
+}
+function fetchCountersData(instanceSettings, backendSrv, reqData) {
+  var enterpriseOnly = instanceSettings.jsonData.enterpriseOnly;
+  return request(instanceSettings, backendSrv, {
+    url: '/api/index/counter/fullmatch',
+    method: 'POST',
+    data: JSON.stringify(reqData)
+  }).then(function (res) {
+    if (enterpriseOnly) {
+      return res.list;
+    }
+
+    return res;
+  });
+}
+function fetchSeriesData(instanceSettings, backendSrv, reqData) {
+  return request(instanceSettings, backendSrv, {
+    url: '/api/transfer/data/ui',
+    method: 'POST',
+    data: JSON.stringify(reqData)
+  }).then(function (res) {
+    return lodash_filter__WEBPACK_IMPORTED_MODULE_4___default()(res, function (item) {
+      return !lodash_isEmpty__WEBPACK_IMPORTED_MODULE_5___default()(item.values);
+    });
+  });
+}
+
+/***/ }),
+
 /***/ "./types.ts":
 /*!******************!*\
   !*** ./types.ts ***!
@@ -51714,6 +53297,7 @@ var plugin = new _grafana_data__WEBPACK_IMPORTED_MODULE_0__["DataSourcePlugin"](
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "defaultQuery", function() { return defaultQuery; });
 var defaultQuery = {
+  category: 0,
   selectedEndpointsIdent: ['=all'],
   selectedTagkv: []
 };
