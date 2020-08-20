@@ -1,20 +1,18 @@
 import _ from 'lodash';
 import React, { PureComponent } from 'react';
-// import { Input, Select, message } from 'antd';
 import Input from 'antd/lib/input';
 import Select from 'antd/lib/select';
-import message from 'antd/lib/message';
+import Radio from 'antd/lib/radio';
 import { LegacyForms } from '@grafana/ui';
 import { QueryEditorProps } from '@grafana/data';
-import { BackendSrvRequest, getTemplateSrv } from '@grafana/runtime';
 import { DataSource } from './DataSource';
 import { defaultQuery, MyDataSourceOptions, MyQuery } from './types';
 import TreeSelect, { normalizeTreeData } from './Components/TreeSelect';
 import { TypeTreeNode } from './Components/TreeSelect/types';
 import Tagkv from './Components/Tagkv';
 import { TypeTagkv } from './Components/Tagkv/types';
-import { hasDtag, hasVariable, getDTagvKeyword, dFilter } from './Components/Tagkv/utils';
 import { aggrOptions, comparisonOptions } from './config';
+import { fetchTreeData, fetchEndpointsData, fetchMetricsData, fetchTagkvData } from './services';
 import './less/style.less';
 import './less/antd.dark.less';
 
@@ -43,47 +41,23 @@ export class QueryEditor extends PureComponent<Props> {
     tagkvDataLoading: false,
   };
 
-  _request(options: BackendSrvRequest) {
-    const { instanceSettings, backendSrv } = this.props.datasource;
-    const prefix = `/api/datasources/proxy/${instanceSettings.id}`;
-
-    return backendSrv
-      .datasourceRequest({
-        ...options,
-        url: `${prefix}${options.url}`,
-      })
-      .then(res => {
-        if (res.data.err) {
-          message.warning(res.data.err);
-        }
-        return res.data.dat;
-      })
-      .catch(err => {
-        if (_.get(err, 'data.err')) {
-          message.error(_.get(err, 'data.err'));
-        } else {
-          message.error(err.statusText);
-        }
-      });
-  }
-
   componentDidMount() {
     this.fetchData();
   }
 
   async fetchData() {
     const query = _.defaults(this.props.query, defaultQuery);
-    const { selectedNid, selectedEndpointsIdent, selectedMetric } = query;
+    const { selectedNid, selectedEndpointsIdent, selectedMetric, category } = query;
     try {
       await this.fetchTreeData();
       if (selectedNid) {
-        await this.fetchEndpointsData(selectedNid);
+        await this.fetchEndpointsData(selectedNid[0]);
       }
       if (selectedEndpointsIdent) {
-        await this.fetchMetricsData(selectedEndpointsIdent);
+        await this.fetchMetricsData(selectedEndpointsIdent, category);
       }
       if (selectedMetric) {
-        await this.fetchTagkvData([selectedMetric], true);
+        await this.fetchTagkvData([selectedMetric], category, true);
       }
     } catch (e) {
       console.log(e);
@@ -91,94 +65,56 @@ export class QueryEditor extends PureComponent<Props> {
   }
 
   fetchTreeData() {
+    const { instanceSettings, backendSrv } = this.props.datasource;
     this.setState({ treeDataLoading: true });
-    return this._request({
-      url: '/v1/portal/tree',
-      method: 'GET',
-    })
+    fetchTreeData(instanceSettings, backendSrv)
       .then(res => {
         this.setState({ treeData: normalizeTreeData(res) });
       })
-      .catch(err => {})
       .finally(() => {
         this.setState({ treeDataLoading: false });
       });
   }
 
   fetchEndpointsData(nid: number) {
+    const { instanceSettings, backendSrv } = this.props.datasource;
     this.setState({ endpointsDataLoading: true });
-    return this._request({
-      url: `/v1/portal/endpoints/bynodeids?ids=${nid}`,
-      method: 'GET',
-    })
+    return fetchEndpointsData(instanceSettings, backendSrv, nid)
       .then(res => {
-        const endpointsData = _.map(res, 'ident');
-        this.setState({ endpointsData });
-        this.fetchMetricsData(endpointsData);
+        this.setState({ endpointsData: res });
+        this.fetchMetricsData(res, 0);
       })
-      .catch(err => {})
       .finally(() => {
         this.setState({ endpointsDataLoading: false });
       });
   }
 
-  fetchMetricsData(endpointsIdent: string[]) {
-    const templateSrv = getTemplateSrv();
+  fetchMetricsData(endpointsIdent: string[] | number[], category: 0 | 1) {
+    const { instanceSettings, backendSrv } = this.props.datasource;
     const { endpointsData } = this.state;
-    let selectedEndpointsIdent = endpointsIdent;
+
     this.setState({ metricsDataLoading: true });
-    if (hasDtag(selectedEndpointsIdent)) {
-      const dTagvKeyword = getDTagvKeyword(selectedEndpointsIdent[0]) as string;
-      selectedEndpointsIdent = dFilter(dTagvKeyword, selectedEndpointsIdent[0], endpointsData);
-    } else if (hasVariable(selectedEndpointsIdent)) {
-      const replaced = templateSrv.replace(selectedEndpointsIdent[0], undefined, (result: any) => {
-        return result;
-      });
-      selectedEndpointsIdent = _.split(replaced, ',');
-    }
-    return this._request({
-      url: '/api/index/metrics',
-      method: 'POST',
-      data: JSON.stringify({
-        endpoints: selectedEndpointsIdent,
-      }),
-    })
+    return fetchMetricsData(instanceSettings, backendSrv, endpointsIdent, endpointsData, category)
       .then(res => {
-        this.setState({ metricsData: res.metrics });
+        this.setState({ metricsData: res });
       })
-      .catch(err => {})
       .finally(() => {
         this.setState({ metricsDataLoading: false });
       });
   }
 
-  fetchTagkvData(metrics: Array<string | undefined>, isFirstLoad = false) {
-    const templateSrv = getTemplateSrv();
+  fetchTagkvData(metrics: Array<string | undefined>, category: 0 | 1, isFirstLoad = false) {
+    const { instanceSettings, backendSrv } = this.props.datasource;
     const query = _.defaults(this.props.query, defaultQuery);
-    let { selectedEndpointsIdent, selectedTagkv } = query;
+    const { selectedTagkv } = query;
     const { endpointsData } = this.state;
-    this.setState({ tagkvDataLoading: true });
-    if (hasDtag(selectedEndpointsIdent)) {
-      const dTagvKeyword = getDTagvKeyword(selectedEndpointsIdent[0]) as string;
-      selectedEndpointsIdent = dFilter(dTagvKeyword, selectedEndpointsIdent[0], endpointsData);
-    } else if (hasVariable(selectedEndpointsIdent)) {
-      const replaced = templateSrv.replace(selectedEndpointsIdent[0], undefined, (result: any) => {
-        return result;
-      });
-      selectedEndpointsIdent = _.split(replaced, ',');
-    }
-    return this._request({
-      url: '/api/index/tagkv',
-      method: 'POST',
-      data: JSON.stringify({
-        endpoints: selectedEndpointsIdent,
-        metrics,
-      }),
-    })
+    return fetchTagkvData(instanceSettings, backendSrv, query, metrics, endpointsData, category)
       .then(res => {
-        const tagkvData = _.get(res, '[0].tagkv'); // TODO: single metric
+        const tagkvData = _.get(res, 'tagkv');
         this.setState({ tagkvData });
         const { onChange, query, onRunQuery } = this.props;
+
+        // TODO: 逻辑不清
         let newSelectedTagkv = _.map(tagkvData, item => {
           return {
             tagk: item.tagk,
@@ -188,22 +124,26 @@ export class QueryEditor extends PureComponent<Props> {
         if (isFirstLoad) {
           newSelectedTagkv = _.isEmpty(selectedTagkv) ? tagkvData : selectedTagkv;
         }
+
         onChange({
           ...query,
           selectedTagkv: newSelectedTagkv,
           tagkv: tagkvData,
+          _nids: _.map(res.nids, item => String(item)),
         });
         onRunQuery();
       })
-      .catch(err => {})
       .finally(() => {
         this.setState({ tagkvDataLoading: false });
       });
   }
 
   render() {
+    const { instanceSettings } = this.props.datasource;
+    const { enterpriseOnly } = instanceSettings.jsonData;
     const query = _.defaults(this.props.query, defaultQuery);
     const {
+      category,
       selectedNid,
       selectedEndpointsIdent,
       selectedMetric,
@@ -216,22 +156,61 @@ export class QueryEditor extends PureComponent<Props> {
 
     return (
       <div className="n9e-query-editor">
+        {enterpriseOnly ? (
+          <div className="gf-form">
+            <FormField
+              className="n9e-form-field-control-fullWidth"
+              labelWidth={8}
+              label="type"
+              inputEl={
+                <Radio.Group
+                  style={{ marginTop: 5 }}
+                  value={category}
+                  onChange={e => {
+                    const { onChange, query } = this.props;
+                    const { value } = e.target;
+                    onChange({
+                      ...query,
+                      category: value,
+                      selectedEndpointsIdent: [],
+                      selectedMetric: '',
+                      selectedTagkv: [],
+                    });
+                    this.setState({
+                      metricsData: [],
+                      tagkvData: [],
+                    });
+                    if (value === 0) {
+                      this.fetchEndpointsData(selectedNid[0]);
+                    } else if (value === 1) {
+                      this.fetchMetricsData(selectedNid, 1);
+                    }
+                  }}
+                >
+                  <Radio value={0}>Hosts</Radio>
+                  <Radio value={1}>No-Hosts</Radio>
+                </Radio.Group>
+              }
+            />
+          </div>
+        ) : null}
         <div className="gf-form">
           <FormField
-            // tooltip="" // 定义一些提示
             className="n9e-form-field-control-fullWidth"
             labelWidth={8}
-            label="Node path"
+            label="node path"
             inputEl={
               <TreeSelect
                 treeData={treeData}
                 loading={treeDataLoading}
-                value={selectedNid}
+                multiple={category === 1}
+                value={category === 0 && selectedNid !== undefined ? selectedNid[0] : selectedNid}
                 onChange={val => {
                   const { onChange, query } = this.props;
+                  const newSelectedNid = category === 0 ? ([val] as number[]) : (val as number[]);
                   onChange({
                     ...query,
-                    selectedNid: val,
+                    selectedNid: newSelectedNid,
                     selectedEndpointsIdent: ['=all'],
                     selectedMetric: '',
                     selectedTagkv: [],
@@ -240,70 +219,76 @@ export class QueryEditor extends PureComponent<Props> {
                     metricsData: [],
                     tagkvData: [],
                   });
-                  this.fetchEndpointsData(val);
+                  if (category === 0) {
+                    this.fetchEndpointsData(val as number);
+                  } else if (category === 1) {
+                    this.fetchMetricsData(val as number[], 1);
+                  }
                 }}
               />
             }
           />
         </div>
-        <div className="gf-form">
-          <Tagkv
-            type="popover"
-            data={[
-              {
-                tagk: 'endpoint',
-                tagv: endpointsData,
-              },
-            ]}
-            selectedTagkv={[
-              {
-                tagk: 'endpoint',
-                tagv: selectedEndpointsIdent,
-              },
-            ]}
-            onChange={(tagk, tagv) => {
-              const { onChange, query } = this.props;
-              if (!_.isEqual(tagv, selectedEndpointsIdent)) {
-                onChange({
-                  ...query,
-                  selectedEndpointsIdent: tagv,
-                  selectedMetric: '',
-                  selectedTagkv: [],
-                });
-                this.setState({
-                  tagkvData: [],
-                });
-                this.fetchMetricsData(tagv);
-              }
-            }}
-            renderItem={(tagk, tagv, selectedTagv, show) => {
-              return (
-                <Input
-                  style={{ width: '100%' }}
-                  value={_.join(_.slice(selectedTagv, 0, 40), ', ')}
-                  onClick={() => {
-                    show(tagk);
-                  }}
-                />
-              );
-            }}
-            wrapInner={(content, tagk) => {
-              return (
-                <FormField
-                  className="n9e-form-field-control-fullWidth"
-                  labelWidth={8}
-                  label="Endpoints"
-                  inputEl={content}
-                />
-              );
-            }}
-          />
-        </div>
+        {category === 0 ? (
+          <div className="gf-form">
+            <Tagkv
+              type="popover"
+              data={[
+                {
+                  tagk: 'endpoint',
+                  tagv: endpointsData,
+                },
+              ]}
+              selectedTagkv={[
+                {
+                  tagk: 'endpoint',
+                  tagv: selectedEndpointsIdent,
+                },
+              ]}
+              onChange={(tagk, tagv) => {
+                const { onChange, query } = this.props;
+                if (!_.isEqual(tagv, selectedEndpointsIdent)) {
+                  onChange({
+                    ...query,
+                    selectedEndpointsIdent: tagv,
+                    selectedMetric: '',
+                    selectedTagkv: [],
+                  });
+                  this.setState({
+                    tagkvData: [],
+                  });
+                  this.fetchMetricsData(tagv, 0);
+                }
+              }}
+              renderItem={(tagk, tagv, selectedTagv, show) => {
+                return (
+                  <Input
+                    style={{ width: '100%' }}
+                    value={_.join(_.slice(selectedTagv, 0, 40), ', ')}
+                    onClick={() => {
+                      show(tagk);
+                    }}
+                  />
+                );
+              }}
+              wrapInner={(content, tagk) => {
+                return (
+                  <FormField
+                    className="n9e-form-field-control-fullWidth"
+                    labelWidth={8}
+                    label="Endpoints"
+                    inputEl={content}
+                  />
+                );
+              }}
+            />
+          </div>
+        ) : null}
         <div className="gf-form">
           <FormField
             className="n9e-form-field-control-fullWidth"
             labelWidth={8}
-            label="Metrics"
+            label="metric"
             inputEl={
               <Select
                 showSearch
@@ -316,7 +301,7 @@ export class QueryEditor extends PureComponent<Props> {
                     ...query,
                     selectedMetric: val,
                   });
-                  this.fetchTagkvData([val]);
+                  this.fetchTagkvData([val], category);
                 }}
               >
                 {_.map(metricsData, item => {
@@ -395,7 +380,7 @@ export class QueryEditor extends PureComponent<Props> {
         <div className="gf-form">
           <FormField
             labelWidth={8}
-            label="Aggr"
+            label="aggr"
             inputEl={
               <Select
                 showSearch
@@ -424,7 +409,7 @@ export class QueryEditor extends PureComponent<Props> {
           {aggrFunc ? (
             <FormField
               labelWidth={8}
-              label="GroupBy"
+              label="groupBy"
               inputEl={
                 <Select
                   showSearch
@@ -455,7 +440,7 @@ export class QueryEditor extends PureComponent<Props> {
           ) : null}
           <FormField
             labelWidth={8}
-            label="Comparison"
+            label="comparison"
             inputEl={
               <Select
                 showSearch

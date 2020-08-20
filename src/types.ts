@@ -2,8 +2,10 @@ import { DataQuery, DataSourceJsonData } from '@grafana/data';
 import { TypeTagkv } from './Components/Tagkv/types';
 
 export interface MyQuery extends DataQuery {
-  selectedNid: number;
-  selectedEndpointsIdent: string[];
+  category: 0 | 1;
+  selectedNid: number[];
+  selectedEndpointsIdent: string[]; // for cate 0
+  _nids: string[]; // for cate 1 设备无关类别下临时缓存已选节点下的所有 nids
   selectedMetric: string;
   selectedTagkv: TypeTagkv[];
   tagkv: TypeTagkv[];
@@ -13,6 +15,7 @@ export interface MyQuery extends DataQuery {
 }
 
 export const defaultQuery: Partial<MyQuery> = {
+  category: 0,
   selectedEndpointsIdent: ['=all'],
   selectedTagkv: [],
 };
@@ -21,6 +24,7 @@ export const defaultQuery: Partial<MyQuery> = {
  * These are options configured for each DataSource instance
  */
 export interface MyDataSourceOptions extends DataSourceJsonData {
+  enterpriseOnly: boolean;
   path: string;
   apiKey: string;
 }

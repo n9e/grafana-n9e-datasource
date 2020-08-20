@@ -85,13 +85,16 @@ export function renderTreeNodes(nodes: TypeTreeNode[]) {
 interface TypeProps {
   loading: boolean;
   treeData: TypeTreeNode[];
-  value?: number;
-  onChange: (value: number) => void;
+  multiple: boolean;
+  value?: number | number[];
+  onChange: (value: number | number[]) => void;
+  onSearch?: (value: string) => void;
 }
 
 export default function index(props: TypeProps) {
   return (
     <TreeSelect
+      multiple={props.multiple}
       loading={props.loading}
       showSearch
       style={{ width: '100%' }}
@@ -103,6 +106,7 @@ export default function index(props: TypeProps) {
       treeNodeLabelProp="path"
       value={props.value}
       onChange={props.onChange}
+      onSearch={props.onSearch}
     >
       {renderTreeNodes(props.treeData)}
     </TreeSelect>

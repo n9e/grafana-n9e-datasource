@@ -7,15 +7,14 @@ import {
   MutableDataFrame,
   FieldType,
 } from '@grafana/data';
-import { BackendSrv, BackendSrvRequest, getTemplateSrv } from '@grafana/runtime';
-// import { message } from 'antd';
-import message from 'antd/lib/message';
+import { BackendSrv, getTemplateSrv } from '@grafana/runtime';
 
 import { MyQuery, MyDataSourceOptions, defaultQuery } from './types';
 import { hasDtag, hasVariable, getDTagvKeyword, dFilter, getDTagV } from './Components/Tagkv/utils';
 import { TypeTreeNode } from './Components/TreeSelect/types';
 import { normalizeEndpointCounters } from './utils';
 import { comparisonOptions } from './config';
+import { request, fetchTreeData, fetchEndpointsData, fetchCountersData, fetchSeriesData } from './services';
 
 export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
   constructor(public instanceSettings: DataSourceInstanceSettings<MyDataSourceOptions>, public backendSrv: BackendSrv) {
@@ -24,85 +23,28 @@ export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
 
   treeData: TypeTreeNode[] = [];
 
-  _request(options: BackendSrvRequest) {
-    const { id } = this.instanceSettings;
-    const prefix = `/api/datasources/proxy/${id}`;
-
-    return this.backendSrv
-      .datasourceRequest({
-        ...options,
-        url: `${prefix}${options.url}`,
-      })
-      .then(res => {
-        if (res.data.err) {
-          message.warning(res.data.err);
-        }
-        return res.data.dat;
-      })
-      .catch(err => {
-        if (_.get(err, 'data.err')) {
-          message.error(_.get(err, 'data.err'));
-        } else {
-          message.error(err.statusText);
-        }
-      });
-  }
-
   fetchTreeData() {
-    return this._request({
-      url: '/v1/portal/tree',
-      method: 'GET',
-    })
-      .then(res => {
-        const treeData = _.map(res, item => {
-          return {
-            text: item.path,
-          };
-        });
-        this.treeData = res;
-        return treeData;
-      })
-      .catch(err => {})
-      .finally(() => {});
+    return fetchTreeData(this.instanceSettings, this.backendSrv).then(res => {
+      const treeData = _.map(res, item => {
+        return {
+          text: item.path,
+        };
+      });
+      this.treeData = res;
+      return treeData;
+    });
   }
 
   fetchEndpointsData(nid: number) {
-    return this._request({
-      url: `/v1/portal/endpoints/bynodeids?ids=${nid}`,
-    })
-      .then(res => {
-        return _.map(res, 'ident');
-      })
-      .catch(err => {})
-      .finally(() => {});
+    return fetchEndpointsData(this.instanceSettings, this.backendSrv, nid);
   }
 
   fetchCountersData(reqData: any) {
-    return this._request({
-      url: '/api/index/counter/fullmatch',
-      method: 'POST',
-      data: JSON.stringify(reqData),
-    })
-      .then(res => {
-        return res;
-      })
-      .catch(err => {})
-      .finally(() => {});
+    return fetchCountersData(this.instanceSettings, this.backendSrv, reqData);
   }
 
   fetchSeriesData(reqData: any) {
-    return this._request({
-      url: '/api/transfer/data/ui',
-      method: 'POST',
-      data: JSON.stringify(reqData),
-    })
-      .then(res => {
-        return _.filter(res, (item: any) => {
-          return !_.isEmpty(item.values);
-        });
-      })
-      .catch(err => {})
-      .finally(() => {});
+    return fetchSeriesData(this.instanceSettings, this.backendSrv, reqData);
   }
 
   async query(options: DataQueryRequest<MyQuery>): Promise<DataQueryResponse> {
@@ -114,18 +56,26 @@ export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
 
     for (let targetIdx = 0; targetIdx < options.targets.length; targetIdx++) {
       const query = _.defaults(options.targets[targetIdx], defaultQuery);
-      const { selectedNid, selectedMetric, tagkv, aggrFunc, groupKey, comparison } = query;
+      const { category, selectedNid, selectedMetric, tagkv, aggrFunc, groupKey, comparison, _nids } = query;
       let { selectedEndpointsIdent, selectedTagkv } = query;
-      if (hasDtag(selectedEndpointsIdent)) {
-        const endpointsData = (await this.fetchEndpointsData(selectedNid)) as string[];
-        const dTagvKeyword = getDTagvKeyword(selectedEndpointsIdent[0]) as string;
-        selectedEndpointsIdent = dFilter(dTagvKeyword, selectedEndpointsIdent[0], endpointsData);
-      } else if (hasVariable(selectedEndpointsIdent)) {
-        const replaced = templateSrv.replace(selectedEndpointsIdent[0], undefined, (result: any) => {
-          return result;
-        });
-        selectedEndpointsIdent = _.split(replaced, ',');
+      const cateKey = category === 0 ? 'endpoints' : 'nids';
+      let cateVal = selectedEndpointsIdent;
+
+      if (category === 0) {
+        if (hasDtag(cateVal)) {
+          const endpointsData = (await this.fetchEndpointsData(selectedNid[0])) as string[];
+          const dTagvKeyword = getDTagvKeyword(cateVal[0]) as string;
+          cateVal = dFilter(dTagvKeyword, cateVal[0], endpointsData);
+        } else if (hasVariable(cateVal)) {
+          const replaced = templateSrv.replace(cateVal[0], undefined, (result: any) => {
+            return result;
+          });
+          cateVal = _.split(replaced, ',');
+        }
+      } else if (category === 1) {
+        cateVal = _nids;
       }
+
       if (hasDtag(selectedTagkv)) {
         selectedTagkv = _.map(selectedTagkv, item => {
           return {
@@ -139,7 +89,7 @@ export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
       }
       const counters = await this.fetchCountersData([
         {
-          endpoints: selectedEndpointsIdent,
+          [cateKey]: cateVal,
           metric: selectedMetric,
           tagkv: selectedTagkv,
         },
@@ -219,8 +169,11 @@ export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
   }
 
   async testDatasource() {
-    return this._request({
-      url: '/v1/portal/tree',
+    const {
+      jsonData: { enterpriseOnly },
+    } = this.instanceSettings;
+    return request(this.instanceSettings, this.backendSrv, {
+      url: enterpriseOnly ? '/api/hsp/tree' : '/v1/portal/tree',
       method: 'GET',
     })
       .then((res: any) => {

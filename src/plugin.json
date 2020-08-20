@@ -34,21 +34,24 @@
     "method": "GET",
     "url": "{{.JsonData.path}}/v1",
     "headers": [
-      {"name": "x-srv-token", "content": "{{.SecureJsonData.apiKey}}"}
+      {"name": "x-srv-token", "content": "{{.SecureJsonData.apiKey}}"},
+      {"name": "x-user-token", "content": "{{.SecureJsonData.apiKey}}"}
     ]
   }, {
     "path": "api",
     "method": "GET",
     "url": "{{.JsonData.path}}/api",
     "headers": [
-      {"name": "x-srv-token", "content": "{{.SecureJsonData.apiKey}}"}
+      {"name": "x-srv-token", "content": "{{.SecureJsonData.apiKey}}"},
+      {"name": "x-user-token", "content": "{{.SecureJsonData.apiKey}}"}
     ]
   }, {
     "path": "api",
     "method": "POST",
     "url": "{{.JsonData.path}}/api",
     "headers": [
-      {"name": "x-srv-token", "content": "{{.SecureJsonData.apiKey}}"}
+      {"name": "x-srv-token", "content": "{{.SecureJsonData.apiKey}}"},
+      {"name": "x-user-token", "content": "{{.SecureJsonData.apiKey}}"}
     ]
   }],
   "dependencies": {

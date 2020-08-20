@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import update from 'react-addons-update';
 import _ from 'lodash';
-// import { Input, Button, Modal, Popover, Switch } from 'antd';
 import Input from 'antd/lib/input';
 import Button from 'antd/lib/button';
 import Modal from 'antd/lib/modal';

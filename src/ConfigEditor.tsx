@@ -1,13 +1,13 @@
 import React, { ChangeEvent, PureComponent } from 'react';
 import { LegacyForms } from '@grafana/ui';
-import { DataSourcePluginOptionsEditorProps } from '@grafana/data';
+import { DataSourcePluginOptionsEditorProps, onUpdateDatasourceJsonDataOptionChecked } from '@grafana/data';
 import { MyDataSourceOptions, MySecureJsonData } from './types';
-
-const { SecretFormField, FormField } = LegacyForms;
 
 interface Props extends DataSourcePluginOptionsEditorProps<MyDataSourceOptions> {}
 
 interface State {}
+
+const { SecretFormField, FormField, Switch } = LegacyForms;
 
 export class ConfigEditor extends PureComponent<Props, State> {
   onPathChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -52,26 +52,39 @@ export class ConfigEditor extends PureComponent<Props, State> {
 
     return (
       <div className="gf-form-group">
+        <div className="gf-form-inline">
+          <div className="gf-form">
+            <Switch
+              label="Enterprise"
+              labelClass="width-10"
+              checked={jsonData.enterpriseOnly || false}
+              onChange={onUpdateDatasourceJsonDataOptionChecked(this.props, 'enterpriseOnly')}
+            />
+          </div>
+        </div>
+
         <div className="gf-form">
           <FormField
             label="URL"
             labelWidth={6}
             inputWidth={20}
-            onChange={this.onPathChange}
+            tooltip="nginx address, example: http://example.com"
+            placeholder="http://example.com"
             value={jsonData.path || ''}
-            placeholder="nginx address"
+            onChange={this.onPathChange}
           />
         </div>
 
         <div className="gf-form-inline">
           <div className="gf-form">
             <SecretFormField
-              isConfigured={(secureJsonFields && secureJsonFields.apiKey) as boolean}
-              value={secureJsonData.apiKey || ''}
               label="Token"
-              placeholder="field tokens in monapi.yml"
               labelWidth={6}
               inputWidth={20}
+              tooltip="field tokens in monapi.yml"
+              placeholder="field tokens in monapi.yml"
+              isConfigured={(secureJsonFields && secureJsonFields.apiKey) as boolean}
+              value={secureJsonData.apiKey || ''}
               onReset={this.onResetAPIKey}
               onChange={this.onAPIKeyChange}
             />
