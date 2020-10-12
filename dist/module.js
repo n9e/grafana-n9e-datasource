@@ -51862,7 +51862,14 @@ __webpack_require__.r(__webpack_exports__);
 
 var SecretFormField = _grafana_ui__WEBPACK_IMPORTED_MODULE_2__["LegacyForms"].SecretFormField,
     FormField = _grafana_ui__WEBPACK_IMPORTED_MODULE_2__["LegacyForms"].FormField,
-    Switch = _grafana_ui__WEBPACK_IMPORTED_MODULE_2__["LegacyForms"].Switch;
+    Select = _grafana_ui__WEBPACK_IMPORTED_MODULE_2__["LegacyForms"].Select;
+var versions = [{
+  label: 'v2',
+  value: 'v2'
+}, {
+  label: 'v3',
+  value: 'v3'
+}];
 
 var ConfigEditor =
 /** @class */
@@ -51926,11 +51933,15 @@ function (_super) {
       className: "gf-form-inline"
     }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
       className: "gf-form"
-    }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(Switch, {
-      label: "Enterprise",
-      labelClass: "width-10",
-      checked: jsonData.enterpriseOnly || false,
-      onChange: Object(_grafana_data__WEBPACK_IMPORTED_MODULE_3__["onUpdateDatasourceJsonDataOptionChecked"])(this.props, 'enterpriseOnly')
+    }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_grafana_ui__WEBPACK_IMPORTED_MODULE_2__["InlineFormLabel"], {
+      width: 6
+    }, "Version"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(Select, {
+      value: versions.find(function (version) {
+        return version.value === jsonData.version;
+      }) || versions[1],
+      options: versions,
+      width: 20,
+      onChange: Object(_grafana_data__WEBPACK_IMPORTED_MODULE_3__["onUpdateDatasourceJsonDataOptionSelect"])(this.props, 'version')
     }))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
       className: "gf-form"
     }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(FormField, {
@@ -52268,13 +52279,13 @@ function (_super) {
 
   DataSource.prototype.testDatasource = function () {
     return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function () {
-      var enterpriseOnly;
+      var version;
       return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__generator"])(this, function (_a) {
-        enterpriseOnly = this.instanceSettings.jsonData.enterpriseOnly;
+        version = this.instanceSettings.jsonData.version;
         return [2
         /*return*/
         , Object(_services__WEBPACK_IMPORTED_MODULE_8__["request"])(this.instanceSettings, this.backendSrv, {
-          url: enterpriseOnly ? '/api/hsp/tree' : '/v1/portal/tree',
+          url: version === 'v3' ? '/api/hsp/tree' : '/v1/portal/tree',
           method: 'GET'
         }).then(function (res) {
           if (res.status === 200) {
@@ -52584,7 +52595,7 @@ function (_super) {
     var _this = this;
 
     var instanceSettings = this.props.datasource.instanceSettings;
-    var enterpriseOnly = instanceSettings.jsonData.enterpriseOnly;
+    var version = instanceSettings.jsonData.version;
 
     var query = lodash__WEBPACK_IMPORTED_MODULE_1___default.a.defaults(this.props.query, _types__WEBPACK_IMPORTED_MODULE_7__["defaultQuery"]);
 
@@ -52605,7 +52616,7 @@ function (_super) {
         tagkvData = _a.tagkvData;
     return react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("div", {
       className: "n9e-query-editor"
-    }, enterpriseOnly ? react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("div", {
+    }, version === 'v3' ? react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("div", {
       className: "gf-form"
     }, react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(FormField, {
       className: "n9e-form-field-control-fullWidth",
@@ -53126,19 +53137,19 @@ function fetchHabits(instanceSettings, backendSrv) {
   });
 }
 function fetchTreeData(instanceSettings, backendSrv) {
-  var enterpriseOnly = instanceSettings.jsonData.enterpriseOnly;
+  var version = instanceSettings.jsonData.version;
   return request(instanceSettings, backendSrv, {
-    url: enterpriseOnly ? '/api/hsp/tree' : '/v1/portal/tree',
+    url: version === 'v3' ? '/api/hsp/tree' : '/v1/portal/tree',
     method: 'GET'
   });
 }
 function fetchEndpointsData(instanceSettings, backendSrv, nid) {
   return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function () {
-    var enterpriseOnly, endpoints, res, habitsId, err_1;
+    var version, endpoints, res, habitsId, err_1;
     return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__generator"])(this, function (_a) {
       switch (_a.label) {
         case 0:
-          enterpriseOnly = instanceSettings.jsonData.enterpriseOnly;
+          version = instanceSettings.jsonData.version;
           endpoints = [];
           _a.label = 1;
 
@@ -53148,13 +53159,13 @@ function fetchEndpointsData(instanceSettings, backendSrv, nid) {
           return [4
           /*yield*/
           , request(instanceSettings, backendSrv, {
-            url: enterpriseOnly ? "/api/hsp/node/obj/" + nid + "/host?limit=5000" : "/v1/portal/endpoints/bynodeids?ids=" + nid,
+            url: version === 'v3' ? "/api/hsp/node/obj/" + nid + "/host?limit=5000" : "/v1/portal/endpoints/bynodeids?ids=" + nid,
             method: 'GET'
           })];
 
         case 2:
           res = _a.sent();
-          if (!enterpriseOnly) return [3
+          if (!(version === 'v3')) return [3
           /*break*/
           , 4];
           return [4
@@ -53259,13 +53270,13 @@ function fetchTagkvData(instanceSettings, backendSrv, query, metrics, endpointsD
   });
 }
 function fetchCountersData(instanceSettings, backendSrv, reqData) {
-  var enterpriseOnly = instanceSettings.jsonData.enterpriseOnly;
+  var version = instanceSettings.jsonData.version;
   return request(instanceSettings, backendSrv, {
     url: '/api/index/counter/fullmatch',
     method: 'POST',
     data: JSON.stringify(reqData)
   }).then(function (res) {
-    if (enterpriseOnly) {
+    if (version === 'v3') {
       return res.list;
     }
 
