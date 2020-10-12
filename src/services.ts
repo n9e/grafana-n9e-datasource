@@ -47,9 +47,9 @@ export function fetchTreeData(
   instanceSettings: DataSourceInstanceSettings<MyDataSourceOptions>,
   backendSrv: BackendSrv
 ) {
-  const { enterpriseOnly } = instanceSettings.jsonData;
+  const { version } = instanceSettings.jsonData;
   return request(instanceSettings, backendSrv, {
-    url: enterpriseOnly ? '/api/hsp/tree' : '/v1/portal/tree',
+    url: version === 'v3' ? '/api/hsp/tree' : '/v1/portal/tree',
     method: 'GET',
   });
 }
@@ -59,14 +59,14 @@ export async function fetchEndpointsData(
   backendSrv: BackendSrv,
   nid: number
 ) {
-  const { enterpriseOnly } = instanceSettings.jsonData;
+  const { version } = instanceSettings.jsonData;
   let endpoints = [];
   try {
     const res = await request(instanceSettings, backendSrv, {
-      url: enterpriseOnly ? `/api/hsp/node/obj/${nid}/host?limit=5000` : `/v1/portal/endpoints/bynodeids?ids=${nid}`,
+      url: version === 'v3' ? `/api/hsp/node/obj/${nid}/host?limit=5000` : `/v1/portal/endpoints/bynodeids?ids=${nid}`,
       method: 'GET',
     });
-    if (enterpriseOnly) {
+    if (version === 'v3') {
       const habitsId = await fetchHabits(instanceSettings, backendSrv);
       endpoints = map(res.list, habitsId);
     } else {
@@ -156,13 +156,13 @@ export function fetchCountersData(
   backendSrv: BackendSrv,
   reqData: any
 ) {
-  const { enterpriseOnly } = instanceSettings.jsonData;
+  const { version } = instanceSettings.jsonData;
   return request(instanceSettings, backendSrv, {
     url: '/api/index/counter/fullmatch',
     method: 'POST',
     data: JSON.stringify(reqData),
   }).then(res => {
-    if (enterpriseOnly) {
+    if (version === 'v3') {
       return res.list;
     }
     return res;

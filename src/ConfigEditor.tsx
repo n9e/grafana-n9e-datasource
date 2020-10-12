@@ -1,13 +1,17 @@
 import React, { ChangeEvent, PureComponent } from 'react';
-import { LegacyForms } from '@grafana/ui';
-import { DataSourcePluginOptionsEditorProps, onUpdateDatasourceJsonDataOptionChecked } from '@grafana/data';
+import { LegacyForms, InlineFormLabel } from '@grafana/ui';
+import { DataSourcePluginOptionsEditorProps, onUpdateDatasourceJsonDataOptionSelect } from '@grafana/data';
 import { MyDataSourceOptions, MySecureJsonData } from './types';
 
 interface Props extends DataSourcePluginOptionsEditorProps<MyDataSourceOptions> {}
 
 interface State {}
 
-const { SecretFormField, FormField, Switch } = LegacyForms;
+const { SecretFormField, FormField, Select } = LegacyForms;
+const versions = [
+  { label: 'v2', value: 'v2' },
+  { label: 'v3', value: 'v3' },
+];
 
 export class ConfigEditor extends PureComponent<Props, State> {
   onPathChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -54,11 +58,12 @@ export class ConfigEditor extends PureComponent<Props, State> {
       <div className="gf-form-group">
         <div className="gf-form-inline">
           <div className="gf-form">
-            <Switch
-              label="Enterprise"
-              labelClass="width-10"
-              checked={jsonData.enterpriseOnly || false}
-              onChange={onUpdateDatasourceJsonDataOptionChecked(this.props, 'enterpriseOnly')}
+            <InlineFormLabel width={6}>Version</InlineFormLabel>
+            <Select
+              value={versions.find(version => version.value === jsonData.version) || versions[1]}
+              options={versions}
+              width={20}
+              onChange={onUpdateDatasourceJsonDataOptionSelect(this.props, 'version')}
             />
           </div>
         </div>

@@ -170,10 +170,10 @@ export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
 
   async testDatasource() {
     const {
-      jsonData: { enterpriseOnly },
+      jsonData: { version },
     } = this.instanceSettings;
     return request(this.instanceSettings, this.backendSrv, {
-      url: enterpriseOnly ? '/api/hsp/tree' : '/v1/portal/tree',
+      url: version === 'v3' ? '/api/hsp/tree' : '/v1/portal/tree',
       method: 'GET',
     })
       .then((res: any) => {

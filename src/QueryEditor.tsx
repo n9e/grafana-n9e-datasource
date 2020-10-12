@@ -140,7 +140,7 @@ export class QueryEditor extends PureComponent<Props> {
 
   render() {
     const { instanceSettings } = this.props.datasource;
-    const { enterpriseOnly } = instanceSettings.jsonData;
+    const { version } = instanceSettings.jsonData;
     const query = _.defaults(this.props.query, defaultQuery);
     const {
       category,
@@ -156,7 +156,7 @@ export class QueryEditor extends PureComponent<Props> {
 
     return (
       <div className="n9e-query-editor">
-        {enterpriseOnly ? (
+        {version === 'v3' ? (
           <div className="gf-form">
             <FormField
               className="n9e-form-field-control-fullWidth"
