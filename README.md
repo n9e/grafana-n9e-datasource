@@ -31,7 +31,7 @@ Create datasource.
 
 ```
 URL: nginx address
-Token: the token u just created in monapi.yml
+Token: the token u just created in rdb.yml
 ```
 
 ### grafana variables
