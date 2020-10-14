@@ -52285,7 +52285,7 @@ function (_super) {
         return [2
         /*return*/
         , Object(_services__WEBPACK_IMPORTED_MODULE_8__["request"])(this.instanceSettings, this.backendSrv, {
-          url: version === 'v3' ? '/api/hsp/tree' : '/v1/portal/tree',
+          url: version === 'v3' ? '/api/rdb/tree' : '/v1/portal/tree',
           method: 'GET'
         }).then(function (res) {
           if (res.status === 200) {
@@ -52429,7 +52429,7 @@ function (_super) {
             _a.label = 4;
 
           case 4:
-            if (!selectedEndpointsIdent) return [3
+            if (!!lodash__WEBPACK_IMPORTED_MODULE_1___default.a.isEmpty(selectedEndpointsIdent)) return [3
             /*break*/
             , 6];
             return [4
@@ -52501,6 +52501,7 @@ function (_super) {
     var _a = this.props.datasource,
         instanceSettings = _a.instanceSettings,
         backendSrv = _a.backendSrv;
+    var category = this.props.query.category;
     this.setState({
       endpointsDataLoading: true
     });
@@ -52509,7 +52510,11 @@ function (_super) {
         endpointsData: res
       });
 
-      _this.fetchMetricsData(res, 0);
+      if (category === 0) {
+        _this.fetchMetricsData(res, category);
+      } else if (category === 1) {
+        _this.fetchMetricsData([nid], category);
+      }
     })["finally"](function () {
       _this.setState({
         endpointsDataLoading: false
@@ -53074,13 +53079,12 @@ var plugin = new _grafana_data__WEBPACK_IMPORTED_MODULE_0__["DataSourcePlugin"](
 /*!*********************!*\
   !*** ./services.ts ***!
   \*********************/
-/*! exports provided: request, fetchHabits, fetchTreeData, fetchEndpointsData, fetchMetricsData, fetchTagkvData, fetchCountersData, fetchSeriesData */
+/*! exports provided: request, fetchTreeData, fetchEndpointsData, fetchMetricsData, fetchTagkvData, fetchCountersData, fetchSeriesData */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "request", function() { return request; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchHabits", function() { return fetchHabits; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchTreeData", function() { return fetchTreeData; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchEndpointsData", function() { return fetchEndpointsData; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchMetricsData", function() { return fetchMetricsData; });
@@ -53130,22 +53134,16 @@ function request(instanceSettings, backendSrv, options) {
     }
   });
 }
-function fetchHabits(instanceSettings, backendSrv) {
-  return request(instanceSettings, backendSrv, {
-    url: '/api/uic/habits/identity',
-    method: 'GET'
-  });
-}
 function fetchTreeData(instanceSettings, backendSrv) {
   var version = instanceSettings.jsonData.version;
   return request(instanceSettings, backendSrv, {
-    url: version === 'v3' ? '/api/hsp/tree' : '/v1/portal/tree',
+    url: version === 'v3' ? '/api/rdb/tree' : '/v1/portal/tree',
     method: 'GET'
   });
 }
 function fetchEndpointsData(instanceSettings, backendSrv, nid) {
   return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function () {
-    var version, endpoints, res, habitsId, err_1;
+    var version, endpoints, res, err_1;
     return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__generator"])(this, function (_a) {
       switch (_a.label) {
         case 0:
@@ -53154,48 +53152,36 @@ function fetchEndpointsData(instanceSettings, backendSrv, nid) {
           _a.label = 1;
 
         case 1:
-          _a.trys.push([1, 6,, 7]);
+          _a.trys.push([1, 3,, 4]);
 
           return [4
           /*yield*/
           , request(instanceSettings, backendSrv, {
-            url: version === 'v3' ? "/api/hsp/node/obj/" + nid + "/host?limit=5000" : "/v1/portal/endpoints/bynodeids?ids=" + nid,
+            url: version === 'v3' ? "/api/rdb/node/" + nid + "/resources?limit=5000" : "/v1/portal/endpoints/bynodeids?ids=" + nid,
             method: 'GET'
           })];
 
         case 2:
           res = _a.sent();
-          if (!(version === 'v3')) return [3
+
+          if (version === 'v3') {
+            endpoints = lodash_map__WEBPACK_IMPORTED_MODULE_2___default()(res.list, 'ident');
+          } else {
+            endpoints = lodash_map__WEBPACK_IMPORTED_MODULE_2___default()(res, 'ident');
+          }
+
+          return [3
           /*break*/
           , 4];
-          return [4
-          /*yield*/
-          , fetchHabits(instanceSettings, backendSrv)];
 
         case 3:
-          habitsId = _a.sent();
-          endpoints = lodash_map__WEBPACK_IMPORTED_MODULE_2___default()(res.list, habitsId);
-          return [3
-          /*break*/
-          , 5];
-
-        case 4:
-          endpoints = lodash_map__WEBPACK_IMPORTED_MODULE_2___default()(res, 'ident');
-          _a.label = 5;
-
-        case 5:
-          return [3
-          /*break*/
-          , 7];
-
-        case 6:
           err_1 = _a.sent();
           console.log(err_1);
           return [3
           /*break*/
-          , 7];
+          , 4];
 
-        case 7:
+        case 4:
           return [2
           /*return*/
           , endpoints];

@@ -26,8 +26,8 @@
       }
     ],
     "screenshots": [],
-    "version": "1.5.0",
-    "updated": "2020-10-12"
+    "version": "1.5.1",
+    "updated": "2020-10-14"
   },
   "routes": [{
     "path": "v1",
