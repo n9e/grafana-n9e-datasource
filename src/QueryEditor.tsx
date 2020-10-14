@@ -53,7 +53,7 @@ export class QueryEditor extends PureComponent<Props> {
       if (selectedNid) {
         await this.fetchEndpointsData(selectedNid[0]);
       }
-      if (selectedEndpointsIdent) {
+      if (!_.isEmpty(selectedEndpointsIdent)) {
         await this.fetchMetricsData(selectedEndpointsIdent, category);
       }
       if (selectedMetric) {
@@ -78,11 +78,16 @@ export class QueryEditor extends PureComponent<Props> {
 
   fetchEndpointsData(nid: number) {
     const { instanceSettings, backendSrv } = this.props.datasource;
+    const { category } = this.props.query;
     this.setState({ endpointsDataLoading: true });
     return fetchEndpointsData(instanceSettings, backendSrv, nid)
       .then(res => {
         this.setState({ endpointsData: res });
-        this.fetchMetricsData(res, 0);
+        if (category === 0) {
+          this.fetchMetricsData(res, category);
+        } else if (category === 1) {
+          this.fetchMetricsData([nid], category);
+        }
       })
       .finally(() => {
         this.setState({ endpointsDataLoading: false });

@@ -36,20 +36,13 @@ export function request(
     });
 }
 
-export function fetchHabits(instanceSettings: DataSourceInstanceSettings<MyDataSourceOptions>, backendSrv: BackendSrv) {
-  return request(instanceSettings, backendSrv, {
-    url: '/api/uic/habits/identity',
-    method: 'GET',
-  });
-}
-
 export function fetchTreeData(
   instanceSettings: DataSourceInstanceSettings<MyDataSourceOptions>,
   backendSrv: BackendSrv
 ) {
   const { version } = instanceSettings.jsonData;
   return request(instanceSettings, backendSrv, {
-    url: version === 'v3' ? '/api/hsp/tree' : '/v1/portal/tree',
+    url: version === 'v3' ? '/api/rdb/tree' : '/v1/portal/tree',
     method: 'GET',
   });
 }
@@ -63,12 +56,11 @@ export async function fetchEndpointsData(
   let endpoints = [];
   try {
     const res = await request(instanceSettings, backendSrv, {
-      url: version === 'v3' ? `/api/hsp/node/obj/${nid}/host?limit=5000` : `/v1/portal/endpoints/bynodeids?ids=${nid}`,
+      url: version === 'v3' ? `/api/rdb/node/${nid}/resources?limit=5000` : `/v1/portal/endpoints/bynodeids?ids=${nid}`,
       method: 'GET',
     });
     if (version === 'v3') {
-      const habitsId = await fetchHabits(instanceSettings, backendSrv);
-      endpoints = map(res.list, habitsId);
+      endpoints = map(res.list, 'ident');
     } else {
       endpoints = map(res, 'ident');
     }

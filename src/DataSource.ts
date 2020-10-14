@@ -173,7 +173,7 @@ export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
       jsonData: { version },
     } = this.instanceSettings;
     return request(this.instanceSettings, this.backendSrv, {
-      url: version === 'v3' ? '/api/hsp/tree' : '/v1/portal/tree',
+      url: version === 'v3' ? '/api/rdb/tree' : '/v1/portal/tree',
       method: 'GET',
     })
       .then((res: any) => {
