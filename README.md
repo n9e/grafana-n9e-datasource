@@ -18,20 +18,11 @@ grafana-cli --pluginUrl https://github.com/n9e/grafana-n9e-datasource/archive/v1
 
 ### monapi
 
-Add field `tokens` in monapi.yml and use this token when config n9e datasource.
+Add field `tokens` in `rdb.yml` and use this token when config n9e datasource.
 
 ```
 tokens:
   - xxxxx
-```
-### nginx
-
-Add location in nginx.conf
-
-```
-location /v1/portal {
-    proxy_pass http://n9e.monapi;
-}
 ```
 
 ### grafana
