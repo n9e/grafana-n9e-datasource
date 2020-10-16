@@ -65,6 +65,9 @@ yarn watch
 yarn build
 ```
 
+## FAQ
+- [无法看图问题排查](https://github.com/n9e/grafana-n9e-datasource/wiki/%E6%97%A0%E6%B3%95%E7%9C%8B%E5%9B%BE%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5)
+
 ## Learn more
 - [Build a data source plugin tutorial](https://grafana.com/tutorials/build-a-data-source-plugin)
 - [Grafana documentation](https://grafana.com/docs/)
