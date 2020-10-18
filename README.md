@@ -16,14 +16,7 @@ grafana-cli --pluginUrl https://github.com/n9e/grafana-n9e-datasource/archive/v1
 
 ## Configuration
 
-### monapi
-
-Add field `tokens` in `rdb.yml` and use this token when config n9e datasource.
-
-```
-tokens:
-  - xxxxx
-```
+Generate a token on `/rdb/personnel-info/profile`.
 
 ### grafana
 
@@ -31,7 +24,7 @@ Create datasource.
 
 ```
 URL: nginx address
-Token: the token u just created in rdb.yml
+Token: the token u just generated on `/rdb/personnel-info/profile`.
 ```
 
 ### grafana variables
