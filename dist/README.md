@@ -11,28 +11,14 @@ Nightingale >= V2.4.1
 
 ## Installation
 ```BASH
-grafana-cli --pluginUrl https://github.com/n9e/grafana-n9e-datasource/archive/v1.5.1.zip plugins install grafana-n9e-datasource
+grafana-cli --pluginUrl https://github.com/n9e/grafana-n9e-datasource/archive/v1.5.2.zip plugins install grafana-n9e-datasource
 ```
 
 ## Configuration
 
-### monapi
+### rdb
 
-Add field `tokens` in monapi.yml and use this token when config n9e datasource.
-
-```
-tokens:
-  - xxxxx
-```
-### nginx
-
-Add location in nginx.conf
-
-```
-location /v1/portal {
-    proxy_pass http://n9e.monapi;
-}
-```
+Generate a token on `/rdb/personnel-info/profile`.
 
 ### grafana
 
@@ -40,7 +26,7 @@ Create datasource.
 
 ```
 URL: nginx address
-Token: the token u just created in monapi.yml
+Token: the token u just generated on /rdb/personnel-info/profile
 ```
 
 ### grafana variables
@@ -73,6 +59,9 @@ yarn watch
 ```BASH
 yarn build
 ```
+
+## FAQ
+- [无法看图问题排查](https://github.com/n9e/grafana-n9e-datasource/wiki/%E6%97%A0%E6%B3%95%E7%9C%8B%E5%9B%BE%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5)
 
 ## Learn more
 - [Build a data source plugin tutorial](https://grafana.com/tutorials/build-a-data-source-plugin)

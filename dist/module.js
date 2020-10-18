@@ -51950,21 +51950,21 @@ function (_super) {
     }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
       className: "gf-form"
     }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_grafana_ui__WEBPACK_IMPORTED_MODULE_2__["InlineFormLabel"], {
-      width: 6
+      width: 10
     }, "Version"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(Select, {
       value: versions.find(function (version) {
         return version.value === jsonData.version;
       }) || versions[1],
       options: versions,
-      width: 20,
+      width: 27,
       onChange: Object(_grafana_data__WEBPACK_IMPORTED_MODULE_3__["onUpdateDatasourceJsonDataOptionSelect"])(this.props, 'version')
     }))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
       className: "gf-form"
     }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(FormField, {
       label: "URL",
-      labelWidth: 6,
-      inputWidth: 20,
-      tooltip: "nginx address, example: http://example.com",
+      labelWidth: 10,
+      inputWidth: 27,
+      tooltip: "Nginx address, example: http://example.com, do not end with /",
       placeholder: "http://example.com",
       value: jsonData.path || '',
       onChange: this.onPathChange
@@ -51974,10 +51974,10 @@ function (_super) {
       className: "gf-form"
     }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(SecretFormField, {
       label: "Token",
-      labelWidth: 6,
-      inputWidth: 20,
-      tooltip: "field tokens in monapi.yml",
-      placeholder: "field tokens in monapi.yml",
+      labelWidth: 10,
+      inputWidth: 27,
+      tooltip: "Token is added in the n9e personal settings - tokens page",
+      placeholder: "Token is added in the n9e personal settings - tokens page",
       isConfigured: secureJsonFields && secureJsonFields.apiKey,
       value: secureJsonData.apiKey || '',
       onReset: this.onResetAPIKey,
