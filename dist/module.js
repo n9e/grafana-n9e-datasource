@@ -51922,6 +51922,22 @@ function (_super) {
     return _this;
   }
 
+  ConfigEditor.prototype.componentDidMount = function () {
+    var _a = this.props,
+        onOptionsChange = _a.onOptionsChange,
+        options = _a.options; // set default version
+
+    if (!options.jsonData.version) {
+      var jsonData = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"])(Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"])({}, options.jsonData), {
+        version: 'v3'
+      });
+
+      onOptionsChange(Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"])(Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"])({}, options), {
+        jsonData: jsonData
+      }));
+    }
+  };
+
   ConfigEditor.prototype.render = function () {
     var options = this.props.options;
     var jsonData = options.jsonData,
