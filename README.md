@@ -16,6 +16,8 @@ grafana-cli --pluginUrl https://github.com/n9e/grafana-n9e-datasource/archive/v1
 
 ## Configuration
 
+### rdb
+
 Generate a token on `/rdb/personnel-info/profile`.
 
 ### grafana
@@ -24,7 +26,7 @@ Create datasource.
 
 ```
 URL: nginx address
-Token: the token u just generated on `/rdb/personnel-info/profile`.
+Token: the token u just generated on /rdb/personnel-info/profile
 ```
 
 ### grafana variables
