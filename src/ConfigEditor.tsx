@@ -70,11 +70,11 @@ export class ConfigEditor extends PureComponent<Props, State> {
       <div className="gf-form-group">
         <div className="gf-form-inline">
           <div className="gf-form">
-            <InlineFormLabel width={6}>Version</InlineFormLabel>
+            <InlineFormLabel width={10}>Version</InlineFormLabel>
             <Select
               value={versions.find(version => version.value === jsonData.version) || versions[1]}
               options={versions}
-              width={20}
+              width={27}
               onChange={onUpdateDatasourceJsonDataOptionSelect(this.props, 'version')}
             />
           </div>
@@ -83,9 +83,9 @@ export class ConfigEditor extends PureComponent<Props, State> {
         <div className="gf-form">
           <FormField
             label="URL"
-            labelWidth={6}
-            inputWidth={20}
-            tooltip="nginx address, example: http://example.com"
+            labelWidth={10}
+            inputWidth={27}
+            tooltip="Nginx address, example: http://example.com, do not end with /"
             placeholder="http://example.com"
             value={jsonData.path || ''}
             onChange={this.onPathChange}
@@ -96,10 +96,10 @@ export class ConfigEditor extends PureComponent<Props, State> {
           <div className="gf-form">
             <SecretFormField
               label="Token"
-              labelWidth={6}
-              inputWidth={20}
-              tooltip="field tokens in monapi.yml"
-              placeholder="field tokens in monapi.yml"
+              labelWidth={10}
+              inputWidth={27}
+              tooltip="Token is added in the n9e personal settings - tokens page"
+              placeholder="Token is added in the n9e personal settings - tokens page"
               isConfigured={(secureJsonFields && secureJsonFields.apiKey) as boolean}
               value={secureJsonData.apiKey || ''}
               onReset={this.onResetAPIKey}
