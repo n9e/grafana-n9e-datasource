@@ -49,6 +49,18 @@ export class ConfigEditor extends PureComponent<Props, State> {
     });
   };
 
+  componentDidMount() {
+    const { onOptionsChange, options } = this.props;
+    // set default version
+    if (!options.jsonData.version) {
+      const jsonData = {
+        ...options.jsonData,
+        version: 'v3',
+      };
+      onOptionsChange({ ...options, jsonData });
+    }
+  }
+
   render() {
     const { options } = this.props;
     const { jsonData, secureJsonFields } = options;
