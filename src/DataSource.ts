@@ -14,7 +14,7 @@ import { hasDtag, hasVariable, getDTagvKeyword, dFilter, getDTagV } from './Comp
 import { TypeTreeNode } from './Components/TreeSelect/types';
 import { normalizeEndpointCounters } from './utils';
 import { comparisonOptions } from './config';
-import { request, fetchTreeData, fetchEndpointsData, fetchCountersData, fetchSeriesData } from './services';
+import { request, fetchTreeData, fetchEndpointsData, fetchCountersData, fetchSeriesData, fetchTagkvData } from './services';
 
 export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
   constructor(public instanceSettings: DataSourceInstanceSettings<MyDataSourceOptions>, public backendSrv: BackendSrv) {
@@ -56,7 +56,7 @@ export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
 
     for (let targetIdx = 0; targetIdx < options.targets.length; targetIdx++) {
       const query = _.defaults(options.targets[targetIdx], defaultQuery);
-      const { category, selectedNid, selectedMetric, tagkv, aggrFunc, groupKey, comparison, _nids } = query;
+      const { category, selectedNid, selectedMetric, aggrFunc, groupKey, comparison, _nids } = query;
       let { selectedEndpointsIdent, selectedTagkv } = query;
       const cateKey = category === 0 ? 'endpoints' : 'nids';
       let cateVal = selectedEndpointsIdent;
@@ -77,11 +77,14 @@ export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
       }
 
       if (hasDtag(selectedTagkv)) {
-        selectedTagkv = _.map(selectedTagkv, item => {
-          return {
-            tagk: item.tagk,
-            tagv: getDTagV(tagkv, item),
-          };
+        await fetchTagkvData(this.instanceSettings, this.backendSrv, query, [query.selectedMetric], cateVal, category).then((res) => {
+          selectedTagkv = _.map(selectedTagkv, item => {
+            const tagkvData = _.get(res, 'tagkv');
+            return {
+              tagk: item.tagk,
+              tagv: getDTagV(tagkvData, item),
+            };
+          });
         });
       }
       if (!selectedMetric && _.isEmpty(selectedEndpointsIdent)) {
