@@ -14,7 +14,14 @@ import { hasDtag, hasVariable, getDTagvKeyword, dFilter, getDTagV } from './Comp
 import { TypeTreeNode } from './Components/TreeSelect/types';
 import { normalizeEndpointCounters } from './utils';
 import { comparisonOptions } from './config';
-import { request, fetchTreeData, fetchEndpointsData, fetchCountersData, fetchSeriesData, fetchTagkvData } from './services';
+import {
+  request,
+  fetchTreeData,
+  fetchEndpointsData,
+  fetchCountersData,
+  fetchSeriesData,
+  fetchTagkvData,
+} from './services';
 
 export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
   constructor(public instanceSettings: DataSourceInstanceSettings<MyDataSourceOptions>, public backendSrv: BackendSrv) {
@@ -77,7 +84,14 @@ export class DataSource extends DataSourceApi<MyQuery, MyDataSourceOptions> {
       }
 
       if (hasDtag(selectedTagkv)) {
-        await fetchTagkvData(this.instanceSettings, this.backendSrv, query, [query.selectedMetric], cateVal, category).then((res) => {
+        await fetchTagkvData(
+          this.instanceSettings,
+          this.backendSrv,
+          query,
+          [query.selectedMetric],
+          cateVal,
+          category
+        ).then(res => {
           selectedTagkv = _.map(selectedTagkv, item => {
             const tagkvData = _.get(res, 'tagkv');
             return {

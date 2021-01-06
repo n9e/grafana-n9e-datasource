@@ -52079,7 +52079,7 @@ function (_super) {
             data = [];
 
             _loop_1 = function _loop_1(targetIdx) {
-              var query, category, selectedNid, selectedMetric, tagkv, aggrFunc, groupKey, comparison, _nids, selectedEndpointsIdent, selectedTagkv, cateKey, cateVal, endpointsData, dTagvKeyword, replaced, counters, endpointCounters, sourceData, i, sdata, seriesData;
+              var query, category, selectedNid, selectedMetric, aggrFunc, groupKey, comparison, _nids, selectedEndpointsIdent, selectedTagkv, cateKey, cateVal, endpointsData, dTagvKeyword, replaced, counters, endpointCounters, sourceData, i, sdata, seriesData;
 
               var _a;
 
@@ -52087,7 +52087,7 @@ function (_super) {
                 switch (_b.label) {
                   case 0:
                     query = lodash__WEBPACK_IMPORTED_MODULE_1___default.a.defaults(options.targets[targetIdx], _types__WEBPACK_IMPORTED_MODULE_4__["defaultQuery"]);
-                    category = query.category, selectedNid = query.selectedNid, selectedMetric = query.selectedMetric, tagkv = query.tagkv, aggrFunc = query.aggrFunc, groupKey = query.groupKey, comparison = query.comparison, _nids = query._nids;
+                    category = query.category, selectedNid = query.selectedNid, selectedMetric = query.selectedMetric, aggrFunc = query.aggrFunc, groupKey = query.groupKey, comparison = query.comparison, _nids = query._nids;
                     selectedEndpointsIdent = query.selectedEndpointsIdent, selectedTagkv = query.selectedTagkv;
                     cateKey = category === 0 ? 'endpoints' : 'nids';
                     cateVal = selectedEndpointsIdent;
@@ -52132,15 +52132,28 @@ function (_super) {
                     _b.label = 5;
 
                   case 5:
-                    if (Object(_Components_Tagkv_utils__WEBPACK_IMPORTED_MODULE_5__["hasDtag"])(selectedTagkv)) {
+                    if (!Object(_Components_Tagkv_utils__WEBPACK_IMPORTED_MODULE_5__["hasDtag"])(selectedTagkv)) return [3
+                    /*break*/
+                    , 7];
+                    return [4
+                    /*yield*/
+                    , Object(_services__WEBPACK_IMPORTED_MODULE_8__["fetchTagkvData"])(this_1.instanceSettings, this_1.backendSrv, query, [query.selectedMetric], cateVal, category).then(function (res) {
                       selectedTagkv = lodash__WEBPACK_IMPORTED_MODULE_1___default.a.map(selectedTagkv, function (item) {
+                        var tagkvData = lodash__WEBPACK_IMPORTED_MODULE_1___default.a.get(res, 'tagkv');
+
                         return {
                           tagk: item.tagk,
-                          tagv: Object(_Components_Tagkv_utils__WEBPACK_IMPORTED_MODULE_5__["getDTagV"])(tagkv, item)
+                          tagv: Object(_Components_Tagkv_utils__WEBPACK_IMPORTED_MODULE_5__["getDTagV"])(tagkvData, item)
                         };
                       });
-                    }
+                    })];
 
+                  case 6:
+                    _b.sent();
+
+                    _b.label = 7;
+
+                  case 7:
                     if (!selectedMetric && lodash__WEBPACK_IMPORTED_MODULE_1___default.a.isEmpty(selectedEndpointsIdent)) {
                       return [2
                       /*return*/
@@ -52151,7 +52164,7 @@ function (_super) {
                     /*yield*/
                     , this_1.fetchCountersData([(_a = {}, _a[cateKey] = cateVal, _a.metric = selectedMetric, _a.tagkv = selectedTagkv, _a)])];
 
-                  case 6:
+                  case 8:
                     counters = _b.sent();
                     endpointCounters = Object(_utils__WEBPACK_IMPORTED_MODULE_6__["normalizeEndpointCounters"])({
                       start: from,
@@ -52162,28 +52175,28 @@ function (_super) {
                     }, counters);
                     sourceData = [];
                     i = 0;
-                    _b.label = 7;
+                    _b.label = 9;
 
-                  case 7:
+                  case 9:
                     if (!(i < endpointCounters.length)) return [3
                     /*break*/
-                    , 10];
+                    , 12];
                     return [4
                     /*yield*/
                     , this_1.fetchSeriesData(endpointCounters[i])];
 
-                  case 8:
+                  case 10:
                     sdata = _b.sent();
                     sourceData = lodash__WEBPACK_IMPORTED_MODULE_1___default.a.concat(sourceData, sdata);
-                    _b.label = 9;
+                    _b.label = 11;
 
-                  case 9:
+                  case 11:
                     i++;
                     return [3
                     /*break*/
-                    , 7];
+                    , 9];
 
-                  case 10:
+                  case 12:
                     seriesData = lodash__WEBPACK_IMPORTED_MODULE_1___default.a.map(sourceData, function (item) {
                       var timeValues = [];
                       var valueValues = [];

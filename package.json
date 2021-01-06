@@ -1,6 +1,6 @@
 {
   "name": "n9e-datasource",
-  "version": "1.5.3",
+  "version": "1.5.4",
   "description": "",
   "scripts": {
     "build": "grafana-toolkit plugin:build",
